@@ -1,0 +1,7 @@
+dist/
+.astro/
+node_modules/
+packages/skillsTUI/node_modules/
+bun.lock
+.agents/
+.claude/

@@ -1,4 +1,4 @@
-export const SKILLS_API_BASE = "https://skills.sh/api/search"
+export const SKILLS_API_BASE = 'https://skills.sh/api/search'
 export const MAX_RESULTS = 10
 
 export interface SkillsApiSkill {
@@ -11,19 +11,25 @@ export interface SkillsApiSkill {
   url: string
 }
 
-async function apiSearchSkills({ skill, limit = MAX_RESULTS }: { skill: string, limit?: number }) {
+async function apiSearchSkills({
+  skill,
+}: {
+  skill: string
+}) {
   const response = await fetch(
     `${SKILLS_API_BASE}?q=${encodeURIComponent(skill)}`,
   )
 
   if (!response.ok) {
-    throw new Error(`Skills API error: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Skills API error: ${response.status} ${response.statusText}`,
+    )
   }
 
   const data = (await response.json()) as { skills: SkillsApiSkill[] }
 
   if (!Array.isArray(data.skills)) {
-    throw new Error("Skills API returned an invalid payload")
+    throw new Error('Skills API returned an invalid payload')
   }
 
   return { results: data.skills }

@@ -1,7 +1,16 @@
-import { BoxRenderable, TextRenderable, stringToStyledText } from "@opentui/core"
-import { ADDITIONAL_AGENTS, UNIVERSAL_AGENTS, type Agent } from "./agents"
-import type { Renderer } from "./types"
-import { COLOR_GREEN, COLOR_GRAY, COLOR_WHITE, COLOR_LIGHT_GRAY } from "../constants"
+import {
+  BoxRenderable,
+  TextRenderable,
+  stringToStyledText,
+} from '@opentui/core'
+import {
+  COLOR_GRAY,
+  COLOR_GREEN,
+  COLOR_LIGHT_GRAY,
+  COLOR_WHITE,
+} from '../constants'
+import { ADDITIONAL_AGENTS, UNIVERSAL_AGENTS, type Agent } from './agents'
+import type { Renderer } from './types'
 
 const AGENTS_PER_ROW = 6
 const AGENT_CELL_WIDTH = 20
@@ -12,7 +21,7 @@ type AgentSelectorController = {
 }
 
 function agentCellText(agent: Agent, selected: boolean): string {
-  const checkbox = selected ? "[x]" : "[ ]"
+  const checkbox = selected ? '[x]' : '[ ]'
   return `${checkbox} ${agent.label}`.padEnd(AGENT_CELL_WIDTH)
 }
 
@@ -31,18 +40,18 @@ export function createAgentSelectorController(
   const selectedAdditionalAgents = new Map<string, Agent>()
 
   const panel = new BoxRenderable(renderer, {
-    borderStyle: "rounded",
-    borderColor: "#fff",
+    borderStyle: 'rounded',
+    borderColor: '#fff',
     padding: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: 1,
-    title: "Install Agents",
-    height: 15
+    title: 'Install Agents',
+    height: 15,
   })
 
   // Universal agents — read-only summary
   const universalLabel = new TextRenderable(renderer, {
-    content: `Always included: ${UNIVERSAL_AGENTS.map((a) => a.label).join(" · ")}`,
+    content: `Always included: ${UNIVERSAL_AGENTS.map((a) => a.label).join(' · ')}`,
     fg: COLOR_GRAY,
     marginBottom: 2,
   })
@@ -51,7 +60,7 @@ export function createAgentSelectorController(
   // Separator label
   panel.add(
     new TextRenderable(renderer, {
-      content: "Additional (click to add -a flag):",
+      content: 'Additional (click to add -a flag):',
       fg: COLOR_LIGHT_GRAY,
     }),
   )
@@ -61,7 +70,7 @@ export function createAgentSelectorController(
 
   for (const row of rows) {
     const rowBox = new BoxRenderable(renderer, {
-      flexDirection: "row",
+      flexDirection: 'row',
     })
 
     for (const agent of row) {

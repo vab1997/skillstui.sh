@@ -4,14 +4,21 @@ import {
   ScrollBoxRenderable,
   TextRenderable,
   createCliRenderer,
-} from "@opentui/core"
-import { COLOR_BLACK, COLOR_FOCUSED_BACKGROUND, COLOR_GRAY, COLOR_WHITE, LOGO_LINES, SUBTITLE_LINES } from "../constants"
-import { globalCopyToClipboard } from "./copy-to-clipboard"
-import { createInstallPanelController, installPanel } from "./install-panel"
-import { LabeledInput } from "./labeled-input"
-import { createAgentSelectorController } from "./agent-selector"
-import { createSkillSearchHandler } from "./skill-search-handler"
-import { createSelectionPanelController } from "./selection-panel"
+} from '@opentui/core'
+import {
+  COLOR_BLACK,
+  COLOR_FOCUSED_BACKGROUND,
+  COLOR_GRAY,
+  COLOR_WHITE,
+  LOGO_LINES,
+  SUBTITLE_LINES,
+} from '../constants'
+import { createAgentSelectorController } from './agent-selector'
+import { globalCopyToClipboard } from './copy-to-clipboard'
+import { createInstallPanelController, installPanel } from './install-panel'
+import { LabeledInput } from './labeled-input'
+import { createSelectionPanelController } from './selection-panel'
+import { createSkillSearchHandler } from './skill-search-handler'
 
 export async function startApp() {
   const renderer = await createCliRenderer({
@@ -23,13 +30,13 @@ export async function startApp() {
 
   // --- Search UI ---
   const skillSearch = LabeledInput(renderer, {
-    id: "skill",
-    label: "Skills leaderboard: ",
-    placeholder: "Search skills...",
+    id: 'skill',
+    label: 'Skills leaderboard: ',
+    placeholder: 'Search skills...',
   })
 
   const resultsStatus = new TextRenderable(renderer, {
-    content: "Press Enter to search for skills.",
+    content: 'Press Enter to search for skills.',
     fg: COLOR_GRAY,
   })
 
@@ -43,33 +50,33 @@ export async function startApp() {
   })
   resultsScroll.add(
     new TextRenderable(renderer, {
-      id: "results-placeholder",
-      content: "Results will appear here.",
+      id: 'results-placeholder',
+      content: 'Results will appear here.',
       fg: COLOR_WHITE,
     }),
   )
 
   const resultsPanel = new BoxRenderable(renderer, {
-    borderStyle: "rounded",
+    borderStyle: 'rounded',
     borderColor: COLOR_WHITE,
     padding: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: 1,
-    title: "Results",
+    title: 'Results',
   })
   resultsPanel.add(resultsStatus)
   resultsPanel.add(resultsScroll)
 
   // --- Agent selector + selection panel ---
-  let selectionPanelController: ReturnType<typeof createSelectionPanelController>
-  const agentSelectorController = createAgentSelectorController(
-    renderer,
-    () => selectionPanelController.refreshCommand(),
+  let selectionPanelController: ReturnType<
+    typeof createSelectionPanelController
+  >
+  const agentSelectorController = createAgentSelectorController(renderer, () =>
+    selectionPanelController.refreshCommand(),
   )
-  selectionPanelController = createSelectionPanelController(
-    renderer,
-    () => [...agentSelectorController.selectedAdditionalAgents.values()],
-  )
+  selectionPanelController = createSelectionPanelController(renderer, () => [
+    ...agentSelectorController.selectedAdditionalAgents.values(),
+  ])
 
   // --- Search handler ---
   skillSearch.input.focus()
@@ -88,7 +95,7 @@ export async function startApp() {
   const installPanelController = createInstallPanelController(renderer)
 
   // --- Global hotkeys ---
-  renderer._internalKeyInput.on("keypress", (key) => {
+  renderer._internalKeyInput.on('keypress', (key) => {
     // Ctrl+Y: copy install commands to clipboard
     globalCopyToClipboard(
       key,
@@ -99,15 +106,17 @@ export async function startApp() {
 
     // Ctrl+I: install selected skills for selected agents
     const skills = [...selectionPanelController.selectedSkills.values()]
-    const additionalAgents = [...agentSelectorController.selectedAdditionalAgents.values()]
+    const additionalAgents = [
+      ...agentSelectorController.selectedAdditionalAgents.values(),
+    ]
     installPanel(key, installPanelController, skills, additionalAgents, app)
   })
 
   // --- App layout ---
   const app = new BoxRenderable(renderer, {
-    borderStyle: "rounded",
+    borderStyle: 'rounded',
     padding: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: 1,
     backgroundColor: COLOR_BLACK,
     borderColor: COLOR_WHITE,
@@ -115,7 +124,7 @@ export async function startApp() {
 
   app.add(
     new TextRenderable(renderer, {
-      content: LOGO_LINES.join("\n"),
+      content: LOGO_LINES.join('\n'),
       fg: COLOR_WHITE,
     }),
   )
@@ -131,7 +140,7 @@ export async function startApp() {
   app.add(selectionPanelController.panel)
   app.add(
     new TextRenderable(renderer, {
-      content: "[Ctrl+C] to exit · [Ctrl+Y] to copy · [Ctrl+I] to install",
+      content: '[Ctrl+C] to exit · [Ctrl+Y] to copy · [Ctrl+I] to install',
       fg: COLOR_GRAY,
     }),
   )

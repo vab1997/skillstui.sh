@@ -1,9 +1,9 @@
-import { BoxRenderable, InputRenderable, TextRenderable } from "@opentui/core";
-import type { Renderer } from "./types";
-import { COLOR_GRAY, COLOR_WHITE } from "../constants"
+import { BoxRenderable, InputRenderable, TextRenderable } from '@opentui/core'
+import { COLOR_GRAY, COLOR_WHITE } from '../constants'
+import type { Renderer } from './types'
 
-const COLOR_BACKGROUND = "#222"
-const COLOR_FOCUSED_BACKGROUND = "#333"
+const COLOR_BACKGROUND = '#222'
+const COLOR_FOCUSED_BACKGROUND = '#333'
 
 export function LabeledInput(
   renderer: Renderer,
@@ -20,7 +20,7 @@ export function LabeledInput(
   })
 
   const field = new BoxRenderable(renderer, {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 1,
   })
 

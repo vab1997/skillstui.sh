@@ -2,13 +2,14 @@ import {
   BoxRenderable,
   TextRenderable,
   stringToStyledText,
-} from "@opentui/core"
-import type { Agent } from "./agents"
-import type { Renderer, Skill } from "./types"
-import { generateInstallCommand } from "./utils"
-import { COLOR_GRAY, COLOR_WHITE } from "../constants"
+} from '@opentui/core'
+import { COLOR_GRAY, COLOR_WHITE } from '../constants'
+import type { Agent } from './agents'
+import type { Renderer, Skill } from './types'
+import { generateInstallCommand } from './utils'
 
-const EMPTY_SELECTION_MESSAGE = "No skills selected. Click a result to select it."
+const EMPTY_SELECTION_MESSAGE =
+  'No skills selected. Click a result to select it.'
 
 export type SelectionPanelController = {
   panel: BoxRenderable
@@ -21,7 +22,7 @@ export type SelectionPanelController = {
 
 const getSelectionListContent = (selectedSkills: Map<string, Skill>) => {
   const skills = [...selectedSkills.values()]
-  return skills.map((skill) => `• ${skill.name}`).join("\n")
+  return skills.map((skill) => `• ${skill.name}`).join('\n')
 }
 
 const getGeneratedCommandContent = (
@@ -30,7 +31,9 @@ const getGeneratedCommandContent = (
 ) => {
   const skills = [...selectedSkills.values()]
   const agents = getAgents()
-  return skills.map((skill) => generateInstallCommand(skill, agents)).join(" &&\n")
+  return skills
+    .map((skill) => generateInstallCommand(skill, agents))
+    .join(' &&\n')
 }
 
 export const createSelectionPanelController = (
@@ -45,22 +48,22 @@ export const createSelectionPanelController = (
   })
 
   const generatedCommand = new TextRenderable(renderer, {
-    content: "",
+    content: '',
     fg: COLOR_WHITE,
   })
 
   const selectionStatus = new TextRenderable(renderer, {
-    content: "",
+    content: '',
     fg: COLOR_GRAY,
   })
 
   const panel = new BoxRenderable(renderer, {
-    borderStyle: "rounded",
+    borderStyle: 'rounded',
     borderColor: COLOR_WHITE,
     padding: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: 1,
-    title: "Selected Skills",
+    title: 'Selected Skills',
   })
 
   panel.add(selectionList)
@@ -69,9 +72,9 @@ export const createSelectionPanelController = (
 
   const updateSelectionPanel = () => {
     if (selectedSkills.size === 0) {
-      panel.title = "Selected Skills"
+      panel.title = 'Selected Skills'
       selectionList.content = stringToStyledText(EMPTY_SELECTION_MESSAGE)
-      selectionStatus.content = stringToStyledText("")
+      selectionStatus.content = stringToStyledText('')
       selectionStatus.fg = COLOR_GRAY
 
       if (!commandVisible) {
@@ -85,9 +88,13 @@ export const createSelectionPanelController = (
     }
 
     panel.title = `Selected Skills (${selectedSkills.size}) — Ctrl+Y to copy`
-    selectionList.content = stringToStyledText(getSelectionListContent(selectedSkills))
-    generatedCommand.content = stringToStyledText(getGeneratedCommandContent(selectedSkills, getAgents))
-    selectionStatus.content = stringToStyledText("")
+    selectionList.content = stringToStyledText(
+      getSelectionListContent(selectedSkills),
+    )
+    generatedCommand.content = stringToStyledText(
+      getGeneratedCommandContent(selectedSkills, getAgents),
+    )
+    selectionStatus.content = stringToStyledText('')
     selectionStatus.fg = COLOR_GRAY
 
     if (commandVisible) {
