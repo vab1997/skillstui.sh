@@ -1,23 +1,67 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = 'skillsTUI — TUI for The Open Agent Skills Ecosystem',
+  description = 'TUI for The Open Agent Skills Ecosystem',
+} = Astro.props
+---
+
 <!doctype html>
-<html lang="en">
+<html lang='en' class='dark'>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='canonical' href='https://skillstui.sh' />
+    <link rel='icon' href='/favicon-32x32.png' sizes='32x32' type='image/png' />
+    <link rel='icon' href='/favicon-16x16.png' sizes='16x16' type='image/png' />
+    <link rel='icon' href='/favicon.svg' type='image/svg+xml' />
+    <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
+    <title>{title}</title>
+    <meta name='description' content={description} />
+    <link rel='manifest' href='/site.webmanifest' />
+    <meta name='theme-color' content='#000' />
+    <meta property='og:title' content={title} />
+    <meta property='og:description' content={description} />
+    <meta property='og:type' content='website' />
+    <meta property='og:url' content='https://skillstui.sh' />
+    <meta property='og:image' content='https://skillstui.sh/og.jpg' />
+    <meta property='og:site_name' content='skillstui' />
+    <meta property='og:locale' content='en_US' />
+    <meta name='twitter:card' content='summary_large_image' />
+    <meta name='twitter:site' content='@victorbejas' />
+    <meta name='twitter:title' content={title} />
+    <meta name='twitter:description' content={description} />
+    <meta name='twitter:image' content='https://skillstui.sh/og.jpg' />
+    <script
+      type='application/ld+json'
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'skillstui',
+        url: 'https://skillstui.sh',
+        applicationCategory: 'DeveloperApplication',
+        operatingSystem: 'Any',
+        description: description,
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+        author: {
+          name: 'victorbejas',
+          url: 'https://x.com/victorbejas',
+          '@type': 'Person',
+        },
+      })}
+    />
   </head>
-  <body>
+  <body class='min-h-screen bg-black font-mono text-zinc-300'>
     <slot />
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
