@@ -4,15 +4,16 @@ import { Copy, Check, Package } from '@lucide/astro'
 import { SkillstuiDemo } from '@/components/skillstui-demo'
 import GithubIcon from '@/components/github-icon.astro'
 import { LOGO } from '@/lib/logo'
+import Footer from '@/components/footer.astro'
 
 const steps = [
   {
     title: 'Run the command',
-    body: 'Execute <span class="font-bold text-white">npx skillstui</span> in your project root directory.',
+    body: 'Execute <span class="text-white font-bold">npx skillstui</span> in your project root directory.',
   },
   {
     title: 'Search skills',
-    body: 'Search for skills using the <span class="font-bold text-white">skills.sh</span> API.',
+    body: 'Search for skills using the <span class="text-white font-bold">skills.sh</span> API.',
   },
   {
     title: 'Select skills and agents',
@@ -20,14 +21,14 @@ const steps = [
   },
   {
     title: 'Install skills',
-    body: 'Install the skills you selected using the <span class="font-bold text-white">skills.sh</span> API. The skills are installed into your project directory.',
+    body: 'Install the skills you selected using the <span class="text-white font-bold">skills.sh</span> API. The skills are installed into your project directory.',
   },
 ]
 ---
 
 <Layout>
   <main
-    class='mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-12 px-6 py-8 text-sm lg:grid lg:grid-cols-[minmax(0,30rem)_minmax(0,42rem)] lg:content-center lg:gap-16 lg:py-10 lg:pr-8 lg:pl-12'
+    class='mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-8 px-6 py-8 text-sm lg:grid lg:grid-cols-[minmax(0,30rem)_minmax(0,42rem)] lg:content-center lg:gap-16 lg:py-10 lg:pr-8 lg:pl-12'
   >
     <section class='w-full max-w-2xl'>
       <pre
@@ -37,7 +38,7 @@ const steps = [
       <h1 class='mb-8 text-zinc-400'></h1>
 
       <!-- Install command -->
-      <div class='mb-16 flex items-center justify-between gap-4'>
+      <div class='mb-12 flex items-center justify-between gap-4'>
         <div class='w-full'>
           <p class='mb-2 text-xs tracking-widest uppercase'>Try it now</p>
           <div
@@ -82,7 +83,7 @@ const steps = [
       </div>
 
       <!-- How it works -->
-      <div class='mb-12'>
+      <div class='mb-16'>
         <p class='mb-6 text-xs tracking-widest uppercase'>How it works</p>
         <div class='space-y-4'>
           {
@@ -90,18 +91,21 @@ const steps = [
               <div class='flex gap-4'>
                 <span class='shrink-0 text-zinc-600'>[{i + 1}]</span>
                 <div>
-                  <p class='text-zinc-200'>{step.title}</p>
-                  <p class='text-zinc-500' set:html={step.body} />
+                  <p class=''>{step.title}</p>
+                  <p class='text-muted-foreground/80' set:html={step.body} />
                 </div>
               </div>
             ))
           }
         </div>
       </div>
+
+      <Footer class='hidden lg:flex' />
     </section>
     <section class='flex w-full justify-center lg:justify-end'>
       <SkillstuiDemo client:load />
     </section>
+    <Footer class='mx-0 flex lg:hidden' />
   </main>
 </Layout>
 

@@ -20,12 +20,36 @@ export type SelectionPanelController = {
   getCommandText: () => string
 }
 
-const getSelectionListContent = (selectedSkills: Map<string, Skill>) => {
-  const skills = [...selectedSkills.values()]
-  return skills.map((skill) => `• ${skill.name}`).join('\n')
+const getLineWidth = () => Math.max(40, (process.stdout.columns ?? 80) - 6)
+
+const truncateToLines = (text: string, maxLines: number, lineWidth: number): string => {
+  const visualLines: string[] = []
+  for (const line of text.split('\n')) {
+    if (line.length === 0) {
+      visualLines.push('')
+    } else {
+      for (let i = 0; i < line.length; i += lineWidth) {
+        visualLines.push(line.slice(i, i + lineWidth))
+        if (visualLines.length > maxLines) break
+      }
+    }
+    if (visualLines.length > maxLines) break
+  }
+  if (visualLines.length <= maxLines) return visualLines.join('\n')
+  const result = visualLines.slice(0, maxLines)
+  const last = result[result.length - 1]
+  if (last !== undefined) {
+    result[result.length - 1] = last.slice(0, lineWidth - 1) + '…'
+  }
+  return result.join('\n')
 }
 
-const getGeneratedCommandContent = (
+const getSelectionListContent = (selectedSkills: Map<string, Skill>) => {
+  const names = [...selectedSkills.values()].map((s) => s.name).join(' · ')
+  return truncateToLines(names, 2, getLineWidth())
+}
+
+const buildFullCommand = (
   selectedSkills: Map<string, Skill>,
   getAgents: () => Agent[],
 ) => {
@@ -35,6 +59,11 @@ const getGeneratedCommandContent = (
     .map((skill) => generateInstallCommand(skill, agents))
     .join(' &&\n')
 }
+
+const getDisplayCommandContent = (
+  selectedSkills: Map<string, Skill>,
+  getAgents: () => Agent[],
+) => truncateToLines(buildFullCommand(selectedSkills, getAgents), 2, getLineWidth())
 
 export const createSelectionPanelController = (
   renderer: Renderer,
@@ -64,6 +93,7 @@ export const createSelectionPanelController = (
     flexDirection: 'column',
     gap: 1,
     title: 'Selected Skills',
+    maxHeight: 11,
   })
 
   panel.add(selectionList)
@@ -92,7 +122,7 @@ export const createSelectionPanelController = (
       getSelectionListContent(selectedSkills),
     )
     generatedCommand.content = stringToStyledText(
-      getGeneratedCommandContent(selectedSkills, getAgents),
+      getDisplayCommandContent(selectedSkills, getAgents),
     )
     selectionStatus.content = stringToStyledText('')
     selectionStatus.fg = COLOR_GRAY
@@ -119,13 +149,12 @@ export const createSelectionPanelController = (
   const refreshCommand = () => {
     if (selectedSkills.size > 0) {
       generatedCommand.content = stringToStyledText(
-        getGeneratedCommandContent(selectedSkills, getAgents),
+        getDisplayCommandContent(selectedSkills, getAgents),
       )
     }
   }
 
-  const getCommandText = () =>
-    getGeneratedCommandContent(selectedSkills, getAgents)
+  const getCommandText = () => buildFullCommand(selectedSkills, getAgents)
 
   return {
     panel,

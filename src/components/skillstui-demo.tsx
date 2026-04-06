@@ -1,9 +1,20 @@
+import { LOGO } from '@/lib/logo'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { ADDITIONAL_AGENTS, ALWAYS_INCLUDED_AGENTS, SKILLS_DATA } from './terminal-data'
-import { LOGO } from '@/lib/logo'
+import {
+  ADDITIONAL_AGENTS,
+  ALWAYS_INCLUDED_AGENTS,
+  SKILLS_DATA,
+} from './terminal-data'
 
 const SEARCH_QUERY = 'vercel'
+
+function formatInstalls(n: number): string {
+  if (n >= 1_000_000)
+    return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}m`
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}k`
+  return String(n)
+}
 
 export function SkillstuiDemo() {
   const [phase, setPhase] = useState(0)
@@ -109,43 +120,52 @@ export function SkillstuiDemo() {
                     Found 100 result(s) for &quot;{SEARCH_QUERY}&quot;.
                   </p>
 
-                  {SKILLS_DATA.map((skill, i) => (
-                    <motion.div
-                      key={skill.name}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="space-y-0.5"
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex min-w-0 flex-1 items-start gap-1">
-                          <span
-                            className={
-                              skill.selected ? 'text-[#3fb950]' : 'text-[#8b949e]'
-                            }
-                          >
-                            [{skill.selected ? 'x' : ' '}]
-                          </span>
-                          <span className="text-[#c9d1d9]">{i + 1}.</span>
-                          <span
-                            className={`font-semibold ${skill.selected ? 'text-[#3fb950]' : 'text-[#c9d1d9]'}`}
-                          >
-                            {skill.name}
-                          </span>
-                          <span className="truncate text-[#8b949e]">
-                            {skill.repo} ({skill.installs} installs)
+                  <div style={{ overflow: 'hidden', height: '150px' }}>
+                    {SKILLS_DATA.map((skill, i) => (
+                      <motion.div
+                        key={skill.name}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="space-y-0.5"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex min-w-0 flex-1 items-start gap-1">
+                            <span
+                              className={
+                                skill.selected
+                                  ? 'text-[#3fb950]'
+                                  : 'text-[#8b949e]'
+                              }
+                            >
+                              [{skill.selected ? 'x' : ' '}]
+                            </span>
+                            <span
+                              className={`${skill.selected ? 'text-[#3fb950]' : 'text-[#c9d1d9]'}`}
+                            >
+                              {i + 1}.
+                            </span>
+                            <span
+                              className={`font-semibold ${skill.selected ? 'text-[#3fb950]' : 'text-[#c9d1d9]'}`}
+                            >
+                              {skill.name}
+                            </span>
+                            <span className="truncate text-[#8b949e]">
+                              {skill.source} ({formatInstalls(skill.installs)}{' '}
+                              installs)
+                            </span>
+                          </div>
+                          <span className="shrink-0 cursor-pointer text-[#58a6ff] hover:underline">
+                            show detail
                           </span>
                         </div>
-                        <span className="shrink-0 cursor-pointer text-[#58a6ff] hover:underline">
-                          show detail
-                        </span>
-                      </div>
-                      <div className="pl-6 text-[10px] text-[#6e7681]">
-                        npx skills add https://github.com/{skill.repo} --skill{' '}
-                        {skill.name}
-                      </div>
-                    </motion.div>
-                  ))}
+                        <div className="pl-6 text-[10px] text-[#6e7681]">
+                          npx skills add https://github.com/{skill.source}{' '}
+                          --skill {skill.name}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -178,9 +198,13 @@ export function SkillstuiDemo() {
                     Additional (click to add -a flag):
                   </p>
 
-                  <div className="grid grid-cols-3 gap-x-2 gap-y-0.5 text-[10px] sm:grid-cols-4 md:grid-cols-6">
+                  <div style={{ overflow: 'hidden', height: '64px' }}>
                     {ADDITIONAL_AGENTS.map((agent) => (
-                      <span key={agent.name} className="whitespace-nowrap">
+                      <div
+                        key={agent.name}
+                        style={{ lineHeight: '16px' }}
+                        className="text-[10px]"
+                      >
                         <span
                           className={
                             agent.selected ? 'text-[#79c0ff]' : 'text-[#8b949e]'
@@ -195,7 +219,7 @@ export function SkillstuiDemo() {
                         >
                           {agent.name}
                         </span>
-                      </span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -221,11 +245,9 @@ export function SkillstuiDemo() {
                 </div>
 
                 <div className="space-y-1 p-2">
-                  {selectedSkills.map((skill) => (
-                    <p key={skill.name} className="text-[#8b949e]">
-                      • {skill.name}
-                    </p>
-                  ))}
+                  <span className="text-[#c9d1d9]">
+                    {selectedSkills.map((skill) => skill.name).join(' · ')}
+                  </span>
 
                   <div className="space-y-0.5 pt-2 text-[10px] break-all text-[#6e7681]">
                     <p>
@@ -291,7 +313,8 @@ export function SkillstuiDemo() {
                 transition={{ delay: 0.3 }}
                 className="border-t border-[#30363d] pt-2 text-[10px] text-[#6e7681]"
               >
-                [Ctrl+C] to exit · [Ctrl+Y] to copy · [Ctrl+I] to install
+                [Ctrl+C] exit · [Tab/Shift+Tab] focus · [↑↓] navigate · [Space]
+                select · [Ctrl+Y] copy · [Ctrl+I] install
               </motion.div>
             )}
           </AnimatePresence>

@@ -16,7 +16,7 @@ import {
   COLOR_WHITE,
 } from '../constants'
 import type { Renderer, Skill } from './types'
-import { formatInstallCount, openUrl } from './utils'
+import { formatInstallCount, openUrl, truncateLine } from './utils'
 
 export type SkillCardRef = {
   card: BoxRenderable
@@ -100,9 +100,10 @@ export function SkillCard(
   headerRow.add(link)
 
   card.add(headerRow)
+  const commandWidth = Math.max(20, (process.stdout.columns ?? 80) - 16)
   card.add(
     new TextRenderable(renderer, {
-      content: `   ${skill.command}`,
+      content: `   ${truncateLine(skill.command, commandWidth)}`,
       fg: COLOR_GRAY,
     }),
   )

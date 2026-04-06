@@ -26,6 +26,11 @@ export function formatInstallCount(n: number): string {
   return String(n)
 }
 
+export function truncateLine(text: string, maxWidth: number): string {
+  if (text.length <= maxWidth) return text
+  return text.slice(0, maxWidth - 1) + '…'
+}
+
 export function chunkArray<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = []
   for (let i = 0; i < arr.length; i += size) {

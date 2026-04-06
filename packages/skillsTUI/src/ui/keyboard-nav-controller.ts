@@ -1,7 +1,6 @@
 import type { KeyEvent } from '@opentui/core'
 import type { ScrollBoxRenderable } from '@opentui/core'
 import { ADDITIONAL_AGENTS } from './agents'
-import { AGENTS_PER_ROW } from './agent-selector'
 import type { SkillCardRef } from './skill-card'
 import type { LabeledInput } from './labeled-input'
 import type { createAgentSelectorController } from './agent-selector'
@@ -49,8 +48,8 @@ export function createKeyboardNavController({
     clearSkillFocus()
     skillCards = cards
     focusedSkillIndex = 0
-    if (panelFocus === 'skills' && cards.length > 0) {
-      cards[0]!.setFocused(true)
+    if (cards.length > 0) {
+      switchFocus('skills')
     }
   }
 
@@ -125,10 +124,8 @@ export function createKeyboardNavController({
         return
       }
 
-      if (key.name === 'down') next = Math.min(next + AGENTS_PER_ROW, total - 1)
-      else if (key.name === 'up') next = Math.max(next - AGENTS_PER_ROW, 0)
-      else if (key.name === 'right') next = Math.min(next + 1, total - 1)
-      else if (key.name === 'left') next = Math.max(next - 1, 0)
+      if (key.name === 'down') next = Math.min(next + 1, total - 1)
+      else if (key.name === 'up') next = Math.max(next - 1, 0)
       else return
 
       if (next !== focusedAgentIndex) {
@@ -136,6 +133,7 @@ export function createKeyboardNavController({
         clearAgentFocus()
         focusedAgentIndex = next
         agentSelectorController.setAgentFocused(focusedAgentIndex, true)
+        agentSelectorController.scrollAgentIntoView(focusedAgentIndex)
       }
     }
   }

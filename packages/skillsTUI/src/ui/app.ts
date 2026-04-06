@@ -1,5 +1,6 @@
 import {
   BoxRenderable,
+  CliRenderEvents,
   InputRenderableEvents,
   ScrollBoxRenderable,
   TextRenderable,
@@ -49,7 +50,6 @@ function createSearchPanel(renderer: Renderer) {
   })
 
   const resultsScroll = new ScrollBoxRenderable(renderer, {
-    height: 20,
     scrollY: true,
     scrollX: false,
     scrollbarOptions: {
@@ -87,17 +87,16 @@ function wireSearchHandler(renderer: Renderer, panels: AppPanels) {
     keyboardNavController,
   } = panels
   skillSearch.input.focus()
-  skillSearch.input.on(
-    InputRenderableEvents.ENTER,
-    createSkillSearchHandler({
-      renderer,
-      resultsScroll,
-      resultsStatus,
-      selectedSkills: selectionPanelController.selectedSkills,
-      toggleSkill: selectionPanelController.toggleSkill,
-      onSkillsLoaded: keyboardNavController.onSkillsLoaded,
-    }),
-  )
+  const handler = createSkillSearchHandler({
+    renderer,
+    resultsScroll,
+    resultsStatus,
+    selectedSkills: selectionPanelController.selectedSkills,
+    toggleSkill: selectionPanelController.toggleSkill,
+    onSkillsLoaded: keyboardNavController.onSkillsLoaded,
+  })
+  skillSearch.input.on(InputRenderableEvents.ENTER, handler)
+  return handler
 }
 
 function wireHotkeys(panels: AppPanels) {
@@ -141,17 +140,17 @@ function buildLayout(renderer: Renderer, panels: AppPanels): BoxRenderable {
   } = panels
 
   const app = new BoxRenderable(renderer, {
-    borderStyle: 'rounded',
     padding: 1,
     flexDirection: 'column',
     gap: 1,
     backgroundColor: COLOR_BLACK,
-    borderColor: COLOR_WHITE,
   })
 
   const logoText = new TextRenderable(renderer, {
     content: LOGO_LINES.join('\n'),
     fg: COLOR_WHITE,
+    maxHeight: 12,
+    overflow: 'hidden',
   })
   const subtitleText = new TextRenderable(renderer, {
     content: SUBTITLE_LINES.toUpperCase(),
@@ -218,8 +217,27 @@ export async function startApp() {
   const app = buildLayout(renderer, panels)
   panels.app = app
 
-  wireSearchHandler(renderer, panels)
+  const updateResultsHeight = (terminalHeight: number) => {
+    const panelHeight = Math.max(8, terminalHeight - 40)
+    resultsPanel.height = panelHeight
+    resultsScroll.height = Math.max(4, panelHeight - 6)
+  }
+
+  app.height = renderer.terminalHeight
+  updateResultsHeight(renderer.terminalHeight)
+
+  renderer.on(CliRenderEvents.RESIZE, () => {
+    app.height = renderer.terminalHeight
+    updateResultsHeight(renderer.terminalHeight)
+  })
+
+  const searchHandler = wireSearchHandler(renderer, panels)
   wireHotkeys(panels)
 
   renderer.root.add(app)
+
+  // Default search on startup
+  const DEFAULT_QUERY = 'vercel'
+  panels.skillSearch.input.value = DEFAULT_QUERY
+  searchHandler(DEFAULT_QUERY)
 }
