@@ -18,6 +18,7 @@ export const COLOR_RED = '#FF4444'
 export const COLOR_BLUE = '#006efe'
 export const COLOR_BACKGROUND = '#222'
 export const COLOR_FOCUSED_BACKGROUND = '#333'
+export const COLOR_KEYBOARD_FOCUS = '#444444'
 
 /** UI patterns */
 export const CHECKBOX_CHECKED = '[x]'

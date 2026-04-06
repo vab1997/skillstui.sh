@@ -12,10 +12,17 @@ import {
   COLOR_BLUE,
   COLOR_GRAY,
   COLOR_GREEN,
+  COLOR_KEYBOARD_FOCUS,
   COLOR_WHITE,
 } from '../constants'
 import type { Renderer, Skill } from './types'
 import { formatInstallCount, openUrl } from './utils'
+
+export type SkillCardRef = {
+  card: BoxRenderable
+  setFocused: (focused: boolean) => void
+  toggle: () => void
+}
 
 function cardHeaderText(
   index: number,
@@ -34,7 +41,7 @@ export function SkillCard(
   skill: Skill,
   selectedSkills: Map<string, Skill>,
   onToggle: (skill: Skill) => void,
-) {
+): SkillCardRef {
   const isSelected = () => selectedSkills.has(skill.id)
   const getHeaderForeground = () => (isSelected() ? COLOR_GREEN : COLOR_WHITE)
 
@@ -64,7 +71,7 @@ export function SkillCard(
     marginBottom: 1,
   })
 
-  card.onMouseUp = () => {
+  const toggle = () => {
     onToggle(skill)
     headerText.content = cardHeaderText(
       index,
@@ -75,6 +82,8 @@ export function SkillCard(
     )
     headerText.fg = getHeaderForeground()
   }
+
+  card.onMouseUp = toggle
 
   const link = new TextRenderable(renderer, {
     content: 'show detail',
@@ -98,5 +107,9 @@ export function SkillCard(
     }),
   )
 
-  return card
+  const setFocused = (focused: boolean) => {
+    card.backgroundColor = focused ? COLOR_KEYBOARD_FOCUS : undefined
+  }
+
+  return { card, setFocused, toggle }
 }

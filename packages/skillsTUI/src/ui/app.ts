@@ -17,6 +17,7 @@ import {
 import { createAgentSelectorController } from './agent-selector'
 import { globalCopyToClipboard } from './copy-to-clipboard'
 import { createInstallPanelController, installPanel } from './install-panel'
+import { createKeyboardNavController } from './keyboard-nav-controller'
 import { LabeledInput } from './labeled-input'
 import { createSelectionPanelController } from './selection-panel'
 import { createSkillSearchHandler } from './skill-search-handler'
@@ -32,6 +33,7 @@ type AppPanels = {
   agentSelectorController: ReturnType<typeof createAgentSelectorController>
   selectionPanelController: ReturnType<typeof createSelectionPanelController>
   installPanelController: ReturnType<typeof createInstallPanelController>
+  keyboardNavController: ReturnType<typeof createKeyboardNavController>
 }
 
 function createSearchPanel(renderer: Renderer) {
@@ -77,8 +79,13 @@ function createSearchPanel(renderer: Renderer) {
 }
 
 function wireSearchHandler(renderer: Renderer, panels: AppPanels) {
-  const { skillSearch, resultsScroll, resultsStatus, selectionPanelController } =
-    panels
+  const {
+    skillSearch,
+    resultsScroll,
+    resultsStatus,
+    selectionPanelController,
+    keyboardNavController,
+  } = panels
   skillSearch.input.focus()
   skillSearch.input.on(
     InputRenderableEvents.ENTER,
@@ -88,6 +95,7 @@ function wireSearchHandler(renderer: Renderer, panels: AppPanels) {
       resultsStatus,
       selectedSkills: selectionPanelController.selectedSkills,
       toggleSkill: selectionPanelController.toggleSkill,
+      onSkillsLoaded: keyboardNavController.onSkillsLoaded,
     }),
   )
 }
@@ -99,9 +107,14 @@ function wireHotkeys(panels: AppPanels) {
     selectionPanelController,
     agentSelectorController,
     installPanelController,
+    keyboardNavController,
   } = panels
 
   renderer._internalKeyInput.on('keypress', (key) => {
+    // Keyboard navigation (Tab, Escape, arrows, Space)
+    keyboardNavController.handleKey(key)
+    if (key.propagationStopped) return
+
     // Ctrl+Y: copy install commands to clipboard
     globalCopyToClipboard(
       key,
@@ -136,28 +149,26 @@ function buildLayout(renderer: Renderer, panels: AppPanels): BoxRenderable {
     borderColor: COLOR_WHITE,
   })
 
-  app.add(
-    new TextRenderable(renderer, {
-      content: LOGO_LINES.join('\n'),
-      fg: COLOR_WHITE,
-    }),
-  )
-  app.add(
-    new TextRenderable(renderer, {
-      content: SUBTITLE_LINES.toUpperCase(),
-      fg: COLOR_WHITE,
-    }),
-  )
+  const logoText = new TextRenderable(renderer, {
+    content: LOGO_LINES.join('\n'),
+    fg: COLOR_WHITE,
+  })
+  const subtitleText = new TextRenderable(renderer, {
+    content: SUBTITLE_LINES.toUpperCase(),
+    fg: COLOR_WHITE,
+  })
+  const helpText = new TextRenderable(renderer, {
+    content: '[Ctrl+C] exit · [Tab/Shift+Tab] focus · [↑↓] navigate · [Space] select · [Ctrl+Y] copy · [Ctrl+I] install',
+    fg: COLOR_GRAY,
+  })
+
+  app.add(logoText)
+  app.add(subtitleText)
   app.add(skillSearch.field)
   app.add(resultsPanel)
   app.add(agentSelectorController.panel)
   app.add(selectionPanelController.panel)
-  app.add(
-    new TextRenderable(renderer, {
-      content: '[Ctrl+C] to exit · [Ctrl+Y] to copy · [Ctrl+I] to install',
-      fg: COLOR_GRAY,
-    }),
-  )
+  app.add(helpText)
 
   return app
 }
@@ -184,6 +195,12 @@ export async function startApp() {
 
   const installPanelController = createInstallPanelController(renderer)
 
+  const keyboardNavController = createKeyboardNavController({
+    skillSearch,
+    resultsScroll,
+    agentSelectorController,
+  })
+
   // Assemble panels object — app is built after so we use a placeholder here
   const panels: AppPanels = {
     renderer,
@@ -195,6 +212,7 @@ export async function startApp() {
     agentSelectorController,
     selectionPanelController,
     installPanelController,
+    keyboardNavController,
   }
 
   const app = buildLayout(renderer, panels)

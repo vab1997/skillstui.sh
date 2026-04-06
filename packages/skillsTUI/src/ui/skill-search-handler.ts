@@ -5,7 +5,7 @@ import {
 } from '@opentui/core'
 import { searchSkills } from '../api'
 import { COLOR_GRAY, COLOR_RED } from '../constants'
-import { SkillCard } from './skill-card'
+import { SkillCard, type SkillCardRef } from './skill-card'
 import type { Renderer, Skill } from './types'
 
 const RESULTS_PLACEHOLDER_ID = 'results-placeholder'
@@ -16,6 +16,7 @@ type CreateSkillSearchHandlerOptions = {
   resultsStatus: TextRenderable
   selectedSkills: Map<string, Skill>
   toggleSkill: (skill: Skill) => void
+  onSkillsLoaded?: (cards: SkillCardRef[]) => void
 }
 
 const clearScrollResults = (resultsScroll: ScrollBoxRenderable) => {
@@ -49,6 +50,7 @@ export const createSkillSearchHandler = ({
   resultsStatus,
   selectedSkills,
   toggleSkill,
+  onSkillsLoaded,
 }: CreateSkillSearchHandlerOptions) => {
   let activeSearchId = 0
 
@@ -103,11 +105,13 @@ export const createSkillSearchHandler = ({
         `Found ${results.skills.length} result(s) for "${query}".`,
       )
       clearScrollResults(resultsScroll)
+      const cards: SkillCardRef[] = []
       results.skills.forEach((skill, index) => {
-        resultsScroll.add(
-          SkillCard(renderer, index, skill, selectedSkills, toggleSkill),
-        )
+        const ref = SkillCard(renderer, index, skill, selectedSkills, toggleSkill)
+        resultsScroll.add(ref.card)
+        cards.push(ref)
       })
+      onSkillsLoaded?.(cards)
     } catch (error) {
       if (searchId !== activeSearchId) {
         return
