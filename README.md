@@ -1,5 +1,9 @@
 # skillstui.sh
 
+<a href="https://skillstui.sh">
+<img src="https://skillstui.sh/img-readme.png" alt="skillstui" />
+</a>
+
 Website and CLI for [skillstui.sh](https://skillstui.sh) — a terminal UI for discovering and installing AI agent skills from the [Open Agent Skills Ecosystem](https://skills.sh).
 
 ## What's in this repo
