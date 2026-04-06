@@ -1,133 +1,118 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import { Copy } from '@lucide/astro'
-import { Image } from 'astro:assets'
-import cli from '../assets/cli.png'
+import { Copy, Check, Package } from '@lucide/astro'
+import { SkillstuiDemo } from '@/components/skillstui-demo'
+import GithubIcon from '@/components/github-icon.astro'
+import { LOGO } from '@/lib/logo'
+
+const steps = [
+  {
+    title: 'Run the command',
+    body: 'Execute <span class="font-bold text-white">npx skillstui</span> in your project root directory.',
+  },
+  {
+    title: 'Search skills',
+    body: 'Search for skills using the <span class="font-bold text-white">skills.sh</span> API.',
+  },
+  {
+    title: 'Select skills and agents',
+    body: 'Select the skills you want to install and the AI agents you want to use.',
+  },
+  {
+    title: 'Install skills',
+    body: 'Install the skills you selected using the <span class="font-bold text-white">skills.sh</span> API. The skills are installed into your project directory.',
+  },
+]
 ---
 
 <Layout>
-  <!-- Left column: scrollable content -->
   <main
     class='mx-auto flex max-w-7xl flex-col gap-12 px-6 py-8 text-sm lg:grid lg:grid-cols-[minmax(0,30rem)_minmax(0,42rem)] lg:items-start lg:gap-16 lg:py-10 lg:pr-8 lg:pl-12'
   >
     <section class='w-full max-w-2xl'>
       <pre
-        id='ascii-logo'
-        class='mb-8 h-[6lh] overflow-hidden text-[10px] leading-none sm:text-[12px]'
-        aria-hidden='true'>
-      </pre>
+        class='mb-8 h-[6lh] overflow-hidden text-[10px] leading-none text-white sm:text-[12px]'
+        aria-hidden='true'>{LOGO}</pre>
 
       <h1 class='mb-8 text-zinc-400'></h1>
 
       <!-- Install command -->
-      <div class='mb-12'>
-        <p class='mb-2 text-xs tracking-widest text-zinc-600 uppercase'>
-          Try it now
-        </p>
-        <div
-          class='group flex w-fit cursor-pointer items-center gap-3 border border-zinc-800 bg-zinc-900/80 px-4 py-3'
-          id='install-cmd'
-        >
-          <span class='text-zinc-600'>$</span>
-          <span class='text-zinc-100'>npx skillstui</span>
-          <button
-            class='ml-6 text-zinc-600 transition-colors hover:text-zinc-300'
-            aria-label='Copy command'
-            id='copy-btn'
+      <div class='mb-16 flex items-center justify-between gap-4'>
+        <div class='w-full'>
+          <p class='mb-2 text-xs tracking-widest uppercase'>Try it now</p>
+          <div
+            class='group flex w-fit cursor-pointer items-center gap-3 border border-zinc-800 px-4 py-3'
           >
-            <Copy />
-          </button>
+            <span>$</span>
+            <span>npx skillstui</span>
+            <button
+              class='text-muted-foreground blur-in ease inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors duration-150 active:scale-90 motion-reduce:transition-none'
+              aria-label='Copy command'
+              id='copy-btn'
+            >
+              <span id='icon-copy'><Copy /></span>
+              <span id='icon-check' class='hidden'><Check /></span>
+            </button>
+          </div>
+        </div>
+
+        <div
+          class='group flex cursor-pointer items-center justify-end gap-3 pt-6'
+        >
+          <a
+            href='https://github.com/vab1997/skillstui'
+            target='_blank'
+            rel='noopener noreferrer'
+            class='flex w-full items-center gap-2 border border-white bg-white px-4 py-3 text-sm text-black hover:bg-white/80'
+          >
+            <GithubIcon class='size-6 text-black' />
+            GitHub
+          </a>
+
+          <a
+            href='https://skills.sh'
+            target='_blank'
+            rel='noopener noreferrer'
+            class='border-border flex w-full items-center gap-2 border bg-transparent px-4 py-3 text-xs text-white hover:bg-white/10'
+          >
+            <Package class='size-6' />
+            Skills
+          </a>
         </div>
       </div>
 
       <!-- How it works -->
       <div class='mb-12'>
-        <p class='mb-6 text-xs tracking-widest text-zinc-600 uppercase'>
-          How it works
-        </p>
+        <p class='mb-6 text-xs tracking-widest uppercase'>How it works</p>
         <div class='space-y-4'>
-          <div class='flex gap-4'>
-            <span class='shrink-0 text-zinc-600'>[1]</span>
-            <div>
-              <p class='text-zinc-200'>Run the command</p>
-              <p class='text-zinc-500'>
-                Execute <span class='font-bold text-white'>npx skillstui</span> in
-                your project root directory.
-              </p>
-            </div>
-          </div>
-          <div class='flex gap-4'>
-            <span class='shrink-0 text-zinc-600'>[2]</span>
-            <div>
-              <p class='text-zinc-200'>Search skills</p>
-              <p class='text-zinc-500'>
-                Search for skills using the <span class='font-bold text-white'
-                  >skills.sh</span
-                > API.
-              </p>
-            </div>
-          </div>
-          <div class='flex gap-4'>
-            <span class='shrink-0 text-zinc-600'>[3]</span>
-            <div>
-              <p class='text-zinc-200'>Select skills and agents</p>
-              <p class='text-zinc-500'>
-                Select the skills you want to install and the AI agents you want
-                to use.
-              </p>
-            </div>
-          </div>
-          <div class='flex gap-4'>
-            <span class='shrink-0 text-zinc-600'>[4]</span>
-            <div>
-              <p class='text-zinc-200'>Install skills</p>
-              <p class='text-zinc-500'>
-                Install the skills you selected using the <span
-                  class='font-bold text-white'>skills.sh</span
-                > API. The skills are installed into your project directory.
-              </p>
-            </div>
-          </div>
+          {
+            steps.map((step, i) => (
+              <div class='flex gap-4'>
+                <span class='shrink-0 text-zinc-600'>[{i + 1}]</span>
+                <div>
+                  <p class='text-zinc-200'>{step.title}</p>
+                  <p class='text-zinc-500' set:html={step.body} />
+                </div>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
     <section class='flex w-full justify-center lg:justify-end'>
-      <div
-        class='w-full max-w-[671px] rounded-2xl border border-zinc-800/80 bg-zinc-950 p-3 shadow-[0_0_0_1px_rgba(255,255,255,0.02),0_24px_80px_rgba(0,0,0,0.45)]'
-      >
-        <Image
-          src={cli}
-          alt='Terminal'
-          class='block h-auto w-full border border-zinc-800'
-          width={671}
-          height={817}
-        />
-      </div>
+      <SkillstuiDemo client:load />
     </section>
   </main>
 </Layout>
 
 <script>
-  export const LOGO_LINES = [
-    '███████╗██╗  ██╗██╗██╗     ██╗     ███████╗████████╗██╗   ██╗██╗',
-    '██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝╚══██╔══╝██║   ██║██║',
-    '███████╗█████╔╝ ██║██║     ██║     ███████╗   ██║   ██║   ██║██║',
-    '╚════██║██╔═██╗ ██║██║     ██║     ╚════██║   ██║   ██║   ██║██║',
-    '███████║██╗  ██╗██║███████╗███████╗███████║   ██║   ╚██████╔╝██║',
-    '╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝',
-  ]
-
-  const logo = document.getElementById('ascii-logo')!
-  logo.textContent = LOGO_LINES.join('\n')
-
   document.getElementById('copy-btn')?.addEventListener('click', async () => {
     await navigator.clipboard.writeText('npx skillstui')
-    const btn = document.getElementById('copy-btn')
-    if (btn) {
-      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>`
-      setTimeout(() => {
-        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`
-      }, 2000)
-    }
+    document.getElementById('icon-copy')?.classList.add('hidden')
+    document.getElementById('icon-check')?.classList.remove('hidden')
+    setTimeout(() => {
+      document.getElementById('icon-copy')?.classList.remove('hidden')
+      document.getElementById('icon-check')?.classList.add('hidden')
+    }, 2000)
   })
 </script>

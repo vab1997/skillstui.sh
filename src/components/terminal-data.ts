@@ -1,0 +1,80 @@
+export const SKILLS_DATA = [
+  {
+    selected: true,
+    name: 'find-skills',
+    repo: 'vercel-labs/skills',
+    installs: '774.9k',
+  },
+  {
+    selected: true,
+    name: 'vercel-react-best-practices',
+    repo: 'vercel-labs/agent-skills',
+    installs: '261.1k',
+  },
+  {
+    selected: false,
+    name: 'web-design-guidelines',
+    repo: 'vercel-labs/agent-skills',
+    installs: '210.6k',
+  },
+  {
+    selected: false,
+    name: 'agent-browser',
+    repo: 'vercel-labs/agent-browser',
+    installs: '140.4k',
+  },
+  {
+    selected: false,
+    name: 'vercel-composition-patterns',
+    repo: 'vercel-labs/agent-skills',
+    installs: '106.2k',
+  },
+  {
+    selected: false,
+    name: 'vercel-react-native-skills',
+    repo: 'vercel-labs/agent-skills',
+    installs: '75.2k',
+  },
+  {
+    selected: false,
+    name: 'next-best-practices',
+    repo: 'vercel-labs/next-skills',
+    installs: '47.8k',
+  },
+]
+
+export const ALWAYS_INCLUDED_AGENTS = [
+  'Amp',
+  'Antigravity',
+  'Cline',
+  'Codex',
+  'Cursor',
+  'Deep Agents',
+  'Gemini CLI',
+  'GitHub Copilot',
+  'Kimi Code CLI',
+  'OpenCode',
+  'Replit',
+  'Warp',
+]
+
+export const ADDITIONAL_AGENTS = [
+  { name: 'Augment', selected: false },
+  { name: 'Claude Code', selected: true },
+  { name: 'CodeBuddy', selected: false },
+  { name: 'Command Code', selected: false },
+  { name: 'Continue', selected: false },
+  { name: 'Cortex Code', selected: false },
+  { name: 'Crush', selected: false },
+  { name: 'Goose', selected: false },
+  { name: 'Junie', selected: false },
+  { name: 'Kilo Code', selected: false },
+  { name: 'Kiro CLI', selected: false },
+  { name: 'Mistral Vibe', selected: false },
+  { name: 'OpenClaw', selected: false },
+  { name: 'OpenHands', selected: false },
+  { name: 'Roo Code', selected: false },
+  { name: 'Trae', selected: false },
+  { name: 'Windsurf', selected: true },
+  { name: 'Zencoder', selected: false },
+]
