@@ -3,20 +3,9 @@ import {
   type KeyEvent,
   type TextRenderable,
 } from '@opentui/core'
+import { copyToClipboard } from '../clipboard'
 import { COLOR_GREEN, COLOR_RED } from '../constants'
 import type { Skill } from './types'
-
-export function copyToClipboard(text: string) {
-  const [cmd, ...args] =
-    process.platform === 'win32'
-      ? ['clip']
-      : process.platform === 'darwin'
-        ? ['pbcopy']
-        : ['xclip', '-selection', 'clipboard']
-  const proc = Bun.spawn([cmd, ...args], { stdin: 'pipe' })
-  proc.stdin.write(text)
-  proc.stdin.end()
-}
 
 export function globalCopyToClipboard(
   key: KeyEvent,

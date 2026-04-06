@@ -1,47 +1,51 @@
+import { spawn } from 'node:child_process'
 import {
   BoxRenderable,
   KeyEvent,
   TextRenderable,
   stringToStyledText,
 } from '@opentui/core'
-import { COLOR_GREEN, COLOR_RED } from '../constants'
+import {
+  COLOR_GREEN,
+  COLOR_RED,
+  COLOR_WHITE,
+  EXIT_DELAY_MS,
+  SPINNER,
+  SPINNER_INTERVAL_MS,
+} from '../constants'
 import { UNIVERSAL_AGENTS, type Agent } from './agents'
 import type { Renderer, Skill } from './types'
+import { generateInstallCommand } from './utils'
 
-const SPINNER = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
-
-export function getNpxCommand() {
+function getNpxCommand() {
   return process.platform === 'win32' ? 'npx.cmd' : 'npx'
 }
 
 async function runCommand(
   args: string[],
 ): Promise<{ success: boolean; output: string }> {
-  const proc = Bun.spawn(args, {
-    stdout: 'pipe',
-    stderr: 'pipe',
-    stdin: 'ignore',
+  const [cmd, ...rest] = args
+  return new Promise((resolve) => {
+    const proc = spawn(cmd!, rest, { stdio: ['ignore', 'pipe', 'pipe'] })
+    let output = ''
+    proc.stdout.on('data', (d: Buffer) => {
+      output += d.toString()
+    })
+    proc.stderr.on('data', (d: Buffer) => {
+      output += d.toString()
+    })
+    proc.on('close', (code: number | null) =>
+      resolve({ success: code === 0, output }),
+    )
   })
-  const [stdout, stderr] = await Promise.all([
-    new Response(proc.stdout).text(),
-    new Response(proc.stderr).text(),
-  ])
-  return { success: (await proc.exited) === 0, output: stdout + stderr }
 }
 
 async function installSkill(
   skill: Skill,
   agents: Agent[],
 ): Promise<{ success: boolean; output: string }> {
-  const parts = skill.command.split(' ')
-  const agentArgs = agents.flatMap((a) => ['-a', a.value])
-  return runCommand([
-    getNpxCommand(),
-    '-y',
-    ...parts.slice(1),
-    ...agentArgs,
-    '-y',
-  ])
+  const command = generateInstallCommand(skill, agents)
+  return runCommand([getNpxCommand(), ...command.split(' ').slice(1)])
 }
 
 export function createInstallPanelController(renderer: Renderer) {
@@ -49,7 +53,7 @@ export function createInstallPanelController(renderer: Renderer) {
 
   const panel = new BoxRenderable(renderer, {
     borderStyle: 'rounded',
-    borderColor: '#fff',
+    borderColor: COLOR_WHITE,
     padding: 1,
     flexDirection: 'column',
     gap: 0,
@@ -70,9 +74,9 @@ export function createInstallPanelController(renderer: Renderer) {
     const timer = setInterval(() => {
       frame = (frame + 1) % SPINNER.length
       statusText.content = stringToStyledText(
-        `   ${SPINNER[frame]} Installing skills...`,
+        `   ${SPINNER[frame]!} Installing skills...`,
       )
-    }, 80)
+    }, SPINNER_INTERVAL_MS)
 
     let installed = 0
     const failedNames: string[] = []
@@ -96,7 +100,7 @@ export function createInstallPanelController(renderer: Renderer) {
     setTimeout(() => {
       renderer.destroy()
       process.exit(0)
-    }, 3000)
+    }, EXIT_DELAY_MS)
   }
 
   return {

@@ -6,9 +6,16 @@ import {
   fg,
   t,
 } from '@opentui/core'
-import { COLOR_BLUE, COLOR_GRAY, COLOR_GREEN, COLOR_WHITE } from '../constants'
+import {
+  CHECKBOX_CHECKED,
+  CHECKBOX_EMPTY,
+  COLOR_BLUE,
+  COLOR_GRAY,
+  COLOR_GREEN,
+  COLOR_WHITE,
+} from '../constants'
 import type { Renderer, Skill } from './types'
-import { formatInstalls, openUrl } from './utils'
+import { formatInstallCount, openUrl } from './utils'
 
 function cardHeaderText(
   index: number,
@@ -17,8 +24,8 @@ function cardHeaderText(
   installs: number,
   selected: boolean,
 ) {
-  const checkbox = selected ? '[x]' : '[ ]'
-  return t`${checkbox} ${index + 1}. ${bold(name)} ${fg(COLOR_GRAY)(source)} ${fg(COLOR_GRAY)(`(${formatInstalls(installs)} installs)`)}`
+  const checkbox = selected ? CHECKBOX_CHECKED : CHECKBOX_EMPTY
+  return t`${checkbox} ${index + 1}. ${bold(name)} ${fg(COLOR_GRAY)(source)} ${fg(COLOR_GRAY)(`(${formatInstallCount(installs)} installs)`)}`
 }
 
 export function SkillCard(

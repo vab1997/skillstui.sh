@@ -1,8 +1,42 @@
 {
   "name": "skillstui",
-  "module": "index.ts",
+  "version": "0.1.0",
   "type": "module",
-  "private": true,
+  "description": "TUI for discovering and installing AI agent skills from the Open Agent Skills Ecosystem",
+  "keywords": [
+    "tui",
+    "cli",
+    "skills",
+    "ai",
+    "agents",
+    "claude",
+    "claude-code",
+    "cursor",
+    "copilot",
+    "terminal",
+    "interactive",
+    "skills.sh"
+  ],
+  "main": "./dist/index.js",
+  "bin": {
+    "skillstui": "./dist/index.js"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node --banner '#!/usr/bin/env node' && chmod +x dist/index.js",
+    "prepare": "bun run build",
+    "start": "bun run src/index.ts",
+    "dev": "bun run src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

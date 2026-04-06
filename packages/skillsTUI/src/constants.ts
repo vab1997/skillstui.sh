@@ -18,3 +18,15 @@ export const COLOR_RED = '#FF4444'
 export const COLOR_BLUE = '#006efe'
 export const COLOR_BACKGROUND = '#222'
 export const COLOR_FOCUSED_BACKGROUND = '#333'
+
+/** UI patterns */
+export const CHECKBOX_CHECKED = '[x]'
+export const CHECKBOX_EMPTY = '[ ]'
+
+/** Search results */
+export const RESULTS_PLACEHOLDER_ID = 'results-placeholder'
+
+/** Install animation */
+export const SPINNER = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+export const SPINNER_INTERVAL_MS = 80
+export const EXIT_DELAY_MS = 3000

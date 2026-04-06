@@ -11,6 +11,7 @@ import {
   COLOR_GRAY,
   COLOR_WHITE,
   LOGO_LINES,
+  RESULTS_PLACEHOLDER_ID,
   SUBTITLE_LINES,
 } from '../constants'
 import { createAgentSelectorController } from './agent-selector'
@@ -19,16 +20,21 @@ import { createInstallPanelController, installPanel } from './install-panel'
 import { LabeledInput } from './labeled-input'
 import { createSelectionPanelController } from './selection-panel'
 import { createSkillSearchHandler } from './skill-search-handler'
+import type { Renderer } from './types'
 
-export async function startApp() {
-  const renderer = await createCliRenderer({
-    exitOnCtrlC: true,
-    useMouse: true,
-    autoFocus: true,
-    targetFps: 30,
-  })
+type AppPanels = {
+  renderer: Renderer
+  app: BoxRenderable
+  skillSearch: ReturnType<typeof LabeledInput>
+  resultsPanel: BoxRenderable
+  resultsStatus: TextRenderable
+  resultsScroll: ScrollBoxRenderable
+  agentSelectorController: ReturnType<typeof createAgentSelectorController>
+  selectionPanelController: ReturnType<typeof createSelectionPanelController>
+  installPanelController: ReturnType<typeof createInstallPanelController>
+}
 
-  // --- Search UI ---
+function createSearchPanel(renderer: Renderer) {
   const skillSearch = LabeledInput(renderer, {
     id: 'skill',
     label: 'Skills leaderboard: ',
@@ -50,7 +56,7 @@ export async function startApp() {
   })
   resultsScroll.add(
     new TextRenderable(renderer, {
-      id: 'results-placeholder',
+      id: RESULTS_PLACEHOLDER_ID,
       content: 'Results will appear here.',
       fg: COLOR_WHITE,
     }),
@@ -67,18 +73,12 @@ export async function startApp() {
   resultsPanel.add(resultsStatus)
   resultsPanel.add(resultsScroll)
 
-  // --- Agent selector + selection panel ---
-  let selectionPanelController: ReturnType<
-    typeof createSelectionPanelController
-  >
-  const agentSelectorController = createAgentSelectorController(renderer, () =>
-    selectionPanelController.refreshCommand(),
-  )
-  selectionPanelController = createSelectionPanelController(renderer, () => [
-    ...agentSelectorController.selectedAdditionalAgents.values(),
-  ])
+  return { skillSearch, resultsStatus, resultsScroll, resultsPanel }
+}
 
-  // --- Search handler ---
+function wireSearchHandler(renderer: Renderer, panels: AppPanels) {
+  const { skillSearch, resultsScroll, resultsStatus, selectionPanelController } =
+    panels
   skillSearch.input.focus()
   skillSearch.input.on(
     InputRenderableEvents.ENTER,
@@ -90,11 +90,17 @@ export async function startApp() {
       toggleSkill: selectionPanelController.toggleSkill,
     }),
   )
+}
 
-  // --- Install panel ---
-  const installPanelController = createInstallPanelController(renderer)
+function wireHotkeys(panels: AppPanels) {
+  const {
+    renderer,
+    app,
+    selectionPanelController,
+    agentSelectorController,
+    installPanelController,
+  } = panels
 
-  // --- Global hotkeys ---
   renderer._internalKeyInput.on('keypress', (key) => {
     // Ctrl+Y: copy install commands to clipboard
     globalCopyToClipboard(
@@ -111,8 +117,16 @@ export async function startApp() {
     ]
     installPanel(key, installPanelController, skills, additionalAgents, app)
   })
+}
 
-  // --- App layout ---
+function buildLayout(renderer: Renderer, panels: AppPanels): BoxRenderable {
+  const {
+    skillSearch,
+    resultsPanel,
+    agentSelectorController,
+    selectionPanelController,
+  } = panels
+
   const app = new BoxRenderable(renderer, {
     borderStyle: 'rounded',
     padding: 1,
@@ -144,6 +158,50 @@ export async function startApp() {
       fg: COLOR_GRAY,
     }),
   )
+
+  return app
+}
+
+export async function startApp() {
+  const renderer = await createCliRenderer({
+    exitOnCtrlC: true,
+    useMouse: true,
+    autoFocus: true,
+    targetFps: 30,
+  })
+
+  const { skillSearch, resultsStatus, resultsScroll, resultsPanel } =
+    createSearchPanel(renderer)
+
+  // Agent selector and selection panel share state — selector notifies panel on toggle
+  let selectionPanelController: ReturnType<typeof createSelectionPanelController>
+  const agentSelectorController = createAgentSelectorController(renderer, () =>
+    selectionPanelController.refreshCommand(),
+  )
+  selectionPanelController = createSelectionPanelController(renderer, () => [
+    ...agentSelectorController.selectedAdditionalAgents.values(),
+  ])
+
+  const installPanelController = createInstallPanelController(renderer)
+
+  // Assemble panels object — app is built after so we use a placeholder here
+  const panels: AppPanels = {
+    renderer,
+    app: null as unknown as BoxRenderable, // assigned below
+    skillSearch,
+    resultsPanel,
+    resultsStatus,
+    resultsScroll,
+    agentSelectorController,
+    selectionPanelController,
+    installPanelController,
+  }
+
+  const app = buildLayout(renderer, panels)
+  panels.app = app
+
+  wireSearchHandler(renderer, panels)
+  wireHotkeys(panels)
 
   renderer.root.add(app)
 }

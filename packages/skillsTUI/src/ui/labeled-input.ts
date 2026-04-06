@@ -1,9 +1,11 @@
 import { BoxRenderable, InputRenderable, TextRenderable } from '@opentui/core'
-import { COLOR_GRAY, COLOR_WHITE } from '../constants'
+import {
+  COLOR_BACKGROUND,
+  COLOR_FOCUSED_BACKGROUND,
+  COLOR_GRAY,
+  COLOR_WHITE,
+} from '../constants'
 import type { Renderer } from './types'
-
-const COLOR_BACKGROUND = '#222'
-const COLOR_FOCUSED_BACKGROUND = '#333'
 
 export function LabeledInput(
   renderer: Renderer,

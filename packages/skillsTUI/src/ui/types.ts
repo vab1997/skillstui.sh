@@ -1,5 +1,13 @@
 import { createCliRenderer } from '@opentui/core'
-import { searchSkills } from '../api'
 
 export type Renderer = Awaited<ReturnType<typeof createCliRenderer>>
-export type Skill = Awaited<ReturnType<typeof searchSkills>>['skills'][number]
+
+export interface Skill {
+  id: string
+  skillId: string
+  name: string
+  url: string
+  command: string
+  installs: number
+  source: string
+}

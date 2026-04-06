@@ -4,6 +4,8 @@ import {
   stringToStyledText,
 } from '@opentui/core'
 import {
+  CHECKBOX_CHECKED,
+  CHECKBOX_EMPTY,
   COLOR_GRAY,
   COLOR_GREEN,
   COLOR_LIGHT_GRAY,
@@ -11,6 +13,7 @@ import {
 } from '../constants'
 import { ADDITIONAL_AGENTS, UNIVERSAL_AGENTS, type Agent } from './agents'
 import type { Renderer } from './types'
+import { chunkArray } from './utils'
 
 const AGENTS_PER_ROW = 6
 const AGENT_CELL_WIDTH = 20
@@ -21,16 +24,8 @@ type AgentSelectorController = {
 }
 
 function agentCellText(agent: Agent, selected: boolean): string {
-  const checkbox = selected ? '[x]' : '[ ]'
+  const checkbox = selected ? CHECKBOX_CHECKED : CHECKBOX_EMPTY
   return `${checkbox} ${agent.label}`.padEnd(AGENT_CELL_WIDTH)
-}
-
-function chunkArray<T>(arr: T[], size: number): T[][] {
-  const chunks: T[][] = []
-  for (let i = 0; i < arr.length; i += size) {
-    chunks.push(arr.slice(i, i + size))
-  }
-  return chunks
 }
 
 export function createAgentSelectorController(
@@ -41,7 +36,7 @@ export function createAgentSelectorController(
 
   const panel = new BoxRenderable(renderer, {
     borderStyle: 'rounded',
-    borderColor: '#fff',
+    borderColor: COLOR_WHITE,
     padding: 1,
     flexDirection: 'column',
     gap: 1,
