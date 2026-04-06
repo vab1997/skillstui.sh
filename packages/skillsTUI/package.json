@@ -35,7 +35,8 @@
     "prepare": "bun run build",
     "start": "bun run src/index.ts",
     "dev": "bun run src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
   },
   "devDependencies": {
     "@types/bun": "latest"

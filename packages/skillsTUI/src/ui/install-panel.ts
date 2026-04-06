@@ -21,7 +21,7 @@ function getNpxCommand() {
   return process.platform === 'win32' ? 'npx.cmd' : 'npx'
 }
 
-async function runCommand(
+export async function runCommand(
   args: string[],
 ): Promise<{ success: boolean; output: string }> {
   const [cmd, ...rest] = args
