@@ -1,5 +1,8 @@
 # skillstui
 
+<a href="https://skillstui.sh">
+<img src="https://skillstui.sh/img-readme.png" alt="skillstui" />
+</a>
 > Terminal UI for searching and installing AI agent skills from [skills.sh](https://skills.sh)
 
 ```
