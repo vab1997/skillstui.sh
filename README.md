@@ -1,46 +1,58 @@
-# Astro Starter Kit: Basics
+# skillstui.sh
 
-```sh
-bun create astro@latest -- --template basics
+Website and CLI for [skillstui.sh](https://skillstui.sh) — a terminal UI for discovering and installing AI agent skills from the [Open Agent Skills Ecosystem](https://skills.sh).
+
+## What's in this repo
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── src/                    # Astro marketing site (skillstui.sh)
+│   ├── components/         # React + Astro components
+│   ├── layouts/            # Page layouts
+│   ├── pages/              # Routes
+│   └── styles/             # Global CSS
+│
+└── packages/
+    └── skillsTUI/          # The CLI published to npm as `skillstui`
+        └── src/
+            ├── api.ts      # skills.sh API client
+            ├── clipboard.ts
+            ├── constants.ts
+            └── ui/         # OpenTUI components and app logic
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Getting started
 
-## 🧞 Commands
+### Website
 
-All commands are run from the root of the project, from a terminal:
+```bash
+bun install
+bun dev        # localhost:4321
+bun build      # builds to dist/
+bun preview
+```
 
-| Command               | Action                                           |
-| :-------------------- | :----------------------------------------------- |
-| `bun install`         | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
+### CLI (packages/skillsTUI)
 
-## 👀 Want to learn more?
+```bash
+cd packages/skillsTUI
+bun install
+bun run dev    # run the TUI
+bun run build  # compile to dist/
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Tech stack
+
+| Layer      | Tech                                                                         |
+| ---------- | ---------------------------------------------------------------------------- |
+| Website    | [Astro](https://astro.build) + React + Tailwind                              |
+| CLI        | [Bun](https://bun.sh) + [OpenTUI](https://github.com/nicholasgasior/opentui) |
+| Skills API | [skills.sh](https://skills.sh)                                               |
+
+## Contributing
+
+PRs welcome. Use **Bun** for everything — no npm, yarn, or pnpm.
+
+## License
+
+MIT — see [packages/skillsTUI/LICENSE](./packages/skillsTUI/LICENSE)
