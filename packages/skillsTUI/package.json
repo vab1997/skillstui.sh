@@ -1,6 +1,6 @@
 {
   "name": "skillstui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "TUI for discovering and installing AI agent skills from the Open Agent Skills Ecosystem",
   "keywords": [
@@ -19,7 +19,7 @@
   ],
   "main": "./dist/index.js",
   "bin": {
-    "skillstui": "./dist/index.js"
+    "skillstui": "dist/index.js"
   },
   "license": "MIT",
   "engines": {
@@ -31,20 +31,26 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node --banner '#!/usr/bin/env node' && chmod +x dist/index.js",
+    "build": "tsup",
     "prepare": "bun run build",
-    "start": "bun run src/index.ts",
-    "dev": "bun run src/index.ts",
+    "start": "node dist/index.js",
+    "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "test": "bun test"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/react": "^18",
+    "tsup": "^8"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@opentui/core": "^0.1.96"
+    "ink": "^5",
+    "ink-scroll-list": "^0.4.1",
+    "ink-spinner": "^5",
+    "ink-text-input": "^6",
+    "react": "^18"
   }
 }
