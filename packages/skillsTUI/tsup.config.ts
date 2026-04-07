@@ -6,6 +6,7 @@ export default defineConfig({
   target: 'node18',
   bundle: true,
   clean: true,
+  external: ['react', 'react-dom', 'ink', 'ink-spinner', 'ink-text-input', 'ink-scroll-list'],
   banner: {
     js: '#!/usr/bin/env node',
   },
