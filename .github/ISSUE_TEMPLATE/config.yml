@@ -1,0 +1,10 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 🌐 Visit skillstui.sh
+    url: https://skillstui.sh
+    about: Go to the main website
+
+  - name: 💬 General question or discussion
+    url: https://github.com/vab1997/skillstui.sh/issues
+    about: Browse existing issues or start a discussion
