@@ -22,7 +22,7 @@ Website and CLI for [skillstui.sh](https://skillstui.sh) — a terminal UI for d
             ├── api.ts      # skills.sh API client
             ├── clipboard.ts
             ├── constants.ts
-            └── ui/         # OpenTUI components and app logic
+            └── ui/         # Ink/React components and app logic
 ```
 
 ## Getting started
@@ -50,7 +50,7 @@ bun run build  # compile to dist/
 | Layer      | Tech                                                                         |
 | ---------- | ---------------------------------------------------------------------------- |
 | Website    | [Astro](https://astro.build) + React + Tailwind                              |
-| CLI        | [Bun](https://bun.sh) + [OpenTUI](https://github.com/nicholasgasior/opentui) |
+| CLI        | [Bun](https://bun.sh) + [Ink](https://github.com/vadimdemedes/ink) (React for CLIs) |
 | Skills API | [skills.sh](https://skills.sh)                                               |
 
 ## Contributing

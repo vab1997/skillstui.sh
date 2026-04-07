@@ -3,7 +3,8 @@
 <a href="https://skillstui.sh">
 <img src="https://skillstui.sh/img-readme.png" alt="skillstui" />
 </a>
-> Terminal UI for searching and installing AI agent skills from [skills.sh](https://skills.sh)
+
+Terminal UI for searching and installing AI agent skills from [skills.sh](https://skills.sh)
 
 ```
 npx skillstui
@@ -39,20 +40,25 @@ skillstui
 ## How it works
 
 1. **Search** — type a term and press `Enter` to search skills.sh
-2. **Select** — click any result to add it to your install list
-3. **Choose agents** — toggle additional agents in the panel below
-4. **Install** — press `Ctrl+I` to install everything at once
+2. **Select** — use `↑↓` to navigate results and `Space` to add skills to your install list
+3. **Choose agents** — `Tab` to the agents panel and toggle with `Space`
+4. **Install** — press `Ctrl+G` to install everything at once
 
 ---
 
 ## Keyboard shortcuts
 
-| Key      | Action                            |
-| -------- | --------------------------------- |
-| `Enter`  | Search for skills                 |
-| `Ctrl+I` | Install selected skills           |
-| `Ctrl+Y` | Copy install command to clipboard |
-| `Ctrl+C` | Exit                              |
+| Key               | Action                            |
+| ----------------- | --------------------------------- |
+| `Enter`           | Search for skills                 |
+| `Tab / Shift+Tab` | Navigate between panels           |
+| `↑ / ↓`           | Move within a panel               |
+| `Space`           | Select / deselect                 |
+| `S`               | Open skill detail in browser      |
+| `Escape`          | Back to search                    |
+| `Ctrl+G`          | Install selected skills           |
+| `Ctrl+Y`          | Copy install command to clipboard |
+| `Ctrl+C`          | Exit                              |
 
 ---
 
@@ -70,8 +76,7 @@ Augment · Claude Code · CodeBuddy · Command Code · Continue · Cortex Code �
 
 ## Requirements
 
-- Node.js 18+ or Bun
-- A terminal with mouse support (most modern terminals)
+- Node.js 18+
 
 ---
 
