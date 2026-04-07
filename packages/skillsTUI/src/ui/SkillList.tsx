@@ -1,0 +1,85 @@
+import { Box, Text } from 'ink'
+import { ScrollList } from 'ink-scroll-list'
+import Spinner from 'ink-spinner'
+import { memo } from 'react'
+import { COLOR_GRAY, COLOR_GREEN, COLOR_WHITE } from '../constants.ts'
+import { SkillCard } from './SkillCard.tsx'
+import type { Skill } from './types.ts'
+
+interface Props {
+  results: Skill[]
+  isLoading: boolean
+  error: string | null
+  query: string
+  selectedSkills: Map<string, Skill>
+  focusedIndex: number
+  height: number
+}
+
+export const SkillList = memo(function SkillList({
+  results,
+  isLoading,
+  error,
+  query,
+  selectedSkills,
+  focusedIndex,
+  height,
+}: Props) {
+  return (
+    <Box
+      flexDirection="column"
+      borderStyle="round"
+      borderColor={COLOR_GRAY}
+      paddingX={1}
+    >
+      <Text bold color={COLOR_WHITE}>
+        Skill Results
+      </Text>
+
+      {isLoading && (
+        <Box>
+          <Text color={COLOR_GREEN}>
+            <Spinner type="dots" />
+          </Text>
+          <Text color={COLOR_GRAY}> Searching for "{query}"...</Text>
+        </Box>
+      )}
+
+      {!isLoading && error && <Text color="#FF4444">{error}</Text>}
+
+      {!isLoading && !error && results.length === 0 && query && (
+        <Text color={COLOR_GRAY}>No results found for "{query}"</Text>
+      )}
+
+      {!isLoading && !error && results.length === 0 && !query && (
+        <Text color={COLOR_GRAY}>
+          Type a skill name and press Enter to search
+        </Text>
+      )}
+
+      {!isLoading && !error && results.length > 0 && (
+        <>
+          <Text color={COLOR_GRAY}>
+            {results.length} result{results.length !== 1 ? 's' : ''} for "
+            {query}"
+          </Text>
+          <ScrollList
+            selectedIndex={focusedIndex}
+            scrollAlignment="auto"
+            height={height}
+          >
+            {results.map((skill, i) => (
+              <SkillCard
+                key={skill.id}
+                skill={skill}
+                index={i}
+                isSelected={selectedSkills.has(skill.id)}
+                isFocused={focusedIndex === i}
+              />
+            ))}
+          </ScrollList>
+        </>
+      )}
+    </Box>
+  )
+})

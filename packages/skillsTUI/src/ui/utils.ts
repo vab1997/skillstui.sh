@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import type { Agent } from './agents'
+import { UNIVERSAL_AGENTS, type Agent } from './agents'
 import type { Skill } from './types'
 
 export function generateInstallCommand(skill: Skill, agents: Agent[]): string {
@@ -37,4 +37,24 @@ export function chunkArray<T>(arr: T[], size: number): T[][] {
     chunks.push(arr.slice(i, i + size))
   }
   return chunks
+}
+
+export function buildFullCommand(
+  selectedSkills: Map<string, Skill>,
+  selectedAgents: Map<string, Agent>,
+): string {
+  const allAgents = [...UNIVERSAL_AGENTS, ...[...selectedAgents.values()]]
+  return [...selectedSkills.values()]
+    .map((skill) => generateInstallCommand(skill, allAgents))
+    .join(' &&\n')
+}
+
+export function buildDisplayCommand(
+  selectedSkills: Map<string, Skill>,
+  selectedAgents: Map<string, Agent>,
+): string {
+  const agents = [...selectedAgents.values()]
+  return [...selectedSkills.values()]
+    .map((skill) => generateInstallCommand(skill, agents))
+    .join(' &&\n')
 }
