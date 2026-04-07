@@ -1,3 +1,4 @@
+import { builtinModules } from 'module'
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
@@ -15,8 +16,18 @@ export default defineConfig({
     'ink-spinner',
     'ink-text-input',
   ],
-  external: ['react-devtools-core'],
-  banner: {
-    js: '#!/usr/bin/env node',
+  external: [
+    'react-devtools-core',
+    ...builtinModules,
+    ...builtinModules.map((m) => `node:${m}`),
+  ],
+  esbuildOptions(options) {
+    options.banner = {
+      js: [
+        '#!/usr/bin/env node',
+        "import { createRequire } from 'module';",
+        'const require = createRequire(import.meta.url);',
+      ].join('\n'),
+    }
   },
 })
