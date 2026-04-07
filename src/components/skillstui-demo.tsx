@@ -313,8 +313,8 @@ export function SkillstuiDemo() {
                 transition={{ delay: 0.3 }}
                 className="border-t border-[#30363d] pt-2 text-[10px] text-[#6e7681]"
               >
-                [Ctrl+C] exit · [Tab/Shift+Tab] focus · [↑↓] navigate · [Space]
-                select · [Ctrl+Y] copy · [Ctrl+I] install
+                [Tab] navigate panels · [↑↓] move · [Space] select · [S] detail
+                · [Ctrl+G] install · [Ctrl+Y] copy · [Ctrl+C] exit
               </motion.div>
             )}
           </AnimatePresence>
