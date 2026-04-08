@@ -94,7 +94,10 @@ export function handleKeyboardNavigation({
     if (key.downArrow) {
       dispatch({
         type: 'SET_SKILL_INDEX',
-        payload: Math.min(state.results.length - 1, state.focusedSkillIndex + 1),
+        payload: Math.min(
+          state.results.length - 1,
+          state.focusedSkillIndex + 1,
+        ),
       })
       return
     }

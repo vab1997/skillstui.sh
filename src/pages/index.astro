@@ -28,71 +28,71 @@ const steps = [
 
 <Layout>
   <main
-    class='mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-8 px-6 py-8 text-sm lg:grid lg:grid-cols-[minmax(0,30rem)_minmax(0,42rem)] lg:content-center lg:gap-16 lg:py-10 lg:pr-8 lg:pl-12'
+    class="mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-8 px-6 py-8 text-sm lg:grid lg:grid-cols-[minmax(0,30rem)_minmax(0,42rem)] lg:content-center lg:gap-16 lg:py-10 lg:pr-8 lg:pl-12"
   >
-    <section class='w-full max-w-2xl'>
+    <section class="w-full max-w-2xl">
       <pre
-        class='mb-8 h-[6lh] overflow-hidden text-[10px] leading-none text-white sm:text-[12px]'
-        aria-hidden='true'>{LOGO}</pre>
+        class="mb-8 h-[6lh] overflow-hidden text-[10px] leading-none text-white sm:text-[12px]"
+        aria-hidden="true">{LOGO}</pre>
 
-      <h1 class='mb-8 text-zinc-400'></h1>
+      <h1 class="mb-8 text-zinc-400"></h1>
 
       <!-- Install command -->
-      <div class='mb-12 flex items-center justify-between gap-4'>
-        <div class='w-full'>
-          <p class='mb-2 text-xs tracking-widest uppercase'>Try it now</p>
+      <div class="mb-12 flex items-center justify-between gap-4">
+        <div class="w-full">
+          <p class="mb-2 text-xs tracking-widest uppercase">Try it now</p>
           <div
-            class='group flex w-fit cursor-pointer items-center gap-3 border border-zinc-800 px-4 py-3'
+            class="group flex w-fit cursor-pointer items-center gap-3 border border-zinc-800 px-4 py-3"
           >
             <span>$</span>
             <span>npx skillstui</span>
             <button
-              class='text-muted-foreground blur-in ease inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors duration-150 active:scale-90 motion-reduce:transition-none'
-              aria-label='Copy command'
-              id='copy-btn'
+              class="text-muted-foreground blur-in ease inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors duration-150 active:scale-90 motion-reduce:transition-none"
+              aria-label="Copy command"
+              id="copy-btn"
             >
-              <span id='icon-copy'><Copy /></span>
-              <span id='icon-check' class='hidden'><Check /></span>
+              <span id="icon-copy"><Copy /></span>
+              <span id="icon-check" class="hidden"><Check /></span>
             </button>
           </div>
         </div>
 
         <div
-          class='group flex cursor-pointer items-center justify-end gap-3 pt-6'
+          class="group flex cursor-pointer items-center justify-end gap-3 pt-6"
         >
           <a
-            href='https://github.com/vab1997/skillstui.sh'
-            target='_blank'
-            rel='noopener noreferrer'
-            class='flex w-full items-center gap-2 border bg-white px-4 py-3 text-sm text-black transition-all duration-150 ease-out hover:bg-white/80 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100'
+            href="https://github.com/vab1997/skillstui.sh"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex w-full items-center gap-2 border bg-white px-4 py-3 text-sm text-black transition-all duration-150 ease-out hover:bg-white/80 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
           >
-            <GithubIcon class='size-6 text-black' />
+            <GithubIcon class="size-6 text-black" />
             GitHub
           </a>
 
           <a
-            href='https://skills.sh'
-            target='_blank'
-            rel='noopener noreferrer'
-            class='border-border flex w-full items-center gap-2 border bg-transparent px-4 py-3 text-xs text-white transition-all duration-150 ease-out hover:border-white/10 hover:bg-white/10 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100'
+            href="https://skills.sh"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border-border flex w-full items-center gap-2 border bg-transparent px-4 py-3 text-xs text-white transition-all duration-150 ease-out hover:border-white/10 hover:bg-white/10 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
           >
-            <Package class='size-6' />
+            <Package class="size-6" />
             Skills
           </a>
         </div>
       </div>
 
       <!-- How it works -->
-      <div class='mb-16'>
-        <p class='mb-6 text-xs tracking-widest uppercase'>How it works</p>
-        <div class='space-y-4'>
+      <div class="mb-16">
+        <p class="mb-6 text-xs tracking-widest uppercase">How it works</p>
+        <div class="space-y-4">
           {
             steps.map((step, i) => (
-              <div class='flex gap-4'>
-                <span class='shrink-0 text-zinc-600'>[{i + 1}]</span>
+              <div class="flex gap-4">
+                <span class="shrink-0 text-zinc-600">[{i + 1}]</span>
                 <div>
-                  <p class=''>{step.title}</p>
-                  <p class='text-muted-foreground/80' set:html={step.body} />
+                  <p class="">{step.title}</p>
+                  <p class="text-muted-foreground/80" set:html={step.body} />
                 </div>
               </div>
             ))
@@ -100,12 +100,12 @@ const steps = [
         </div>
       </div>
 
-      <Footer class='hidden lg:flex' />
+      <Footer class="hidden lg:flex" />
     </section>
-    <section class='flex w-full justify-center lg:justify-end'>
+    <section class="flex w-full justify-center lg:justify-end">
       <SkillstuiDemo client:load />
     </section>
-    <Footer class='mx-0 flex lg:hidden' />
+    <Footer class="mx-0 flex lg:hidden" />
   </main>
 </Layout>
 

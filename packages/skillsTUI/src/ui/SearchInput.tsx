@@ -1,7 +1,6 @@
-import React from 'react'
 import { Box, Text } from 'ink'
 import TextInput from 'ink-text-input'
-import { COLOR_GRAY, COLOR_WHITE } from '../constants.ts'
+import { COLOR_GRAY } from '../constants.ts'
 
 interface Props {
   value: string

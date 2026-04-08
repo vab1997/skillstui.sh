@@ -11,11 +11,7 @@ export interface SkillsApiSkill {
   url: string
 }
 
-async function apiSearchSkills({
-  skill,
-}: {
-  skill: string
-}) {
+async function apiSearchSkills({ skill }: { skill: string }) {
   const response = await fetch(
     `${SKILLS_API_BASE}?q=${encodeURIComponent(skill)}`,
   )

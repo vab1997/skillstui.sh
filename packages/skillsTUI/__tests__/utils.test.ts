@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'bun:test'
+import type { Agent } from '../src/ui/agents'
+import type { Skill } from '../src/ui/types'
 import {
   chunkArray,
   formatInstallCount,
   generateInstallCommand,
   truncateLine,
 } from '../src/ui/utils'
-import type { Agent } from '../src/ui/agents'
-import type { Skill } from '../src/ui/types'
 
 const mockSkill: Skill = {
   id: 'test-skill',

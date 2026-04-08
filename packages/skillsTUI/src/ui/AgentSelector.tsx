@@ -1,12 +1,12 @@
-import React, { memo } from 'react'
 import { Box, Text } from 'ink'
 import { ScrollList } from 'ink-scroll-list'
+import { memo, useRef } from 'react'
 import {
+  CHECKBOX_CHECKED,
+  CHECKBOX_EMPTY,
   COLOR_GRAY,
   COLOR_GREEN,
   COLOR_WHITE,
-  CHECKBOX_CHECKED,
-  CHECKBOX_EMPTY,
 } from '../constants.ts'
 import { ADDITIONAL_AGENTS, UNIVERSAL_AGENTS, type Agent } from './agents.ts'
 
@@ -17,18 +17,41 @@ interface Props {
   height: number
 }
 
-export const AgentSelector = memo(function AgentSelector({ selectedAgents, focusedIndex, isFocused, height }: Props) {
+export const AgentSelector = memo(function AgentSelector({
+  selectedAgents,
+  focusedIndex,
+  isFocused,
+  height,
+}: Props) {
   const universalLabels = UNIVERSAL_AGENTS.map((a) => a.label).join(', ')
 
+  const scrollOffsetRef = useRef(0)
+  let scrollOffset = scrollOffsetRef.current
+  if (focusedIndex < scrollOffset) {
+    scrollOffset = focusedIndex
+  } else if (focusedIndex >= scrollOffset + height) {
+    scrollOffset = focusedIndex - height + 1
+  }
+  scrollOffsetRef.current = scrollOffset
+
+  const totalAgents = ADDITIONAL_AGENTS.length
+  const itemsAbove = scrollOffset
+  const itemsBelow = Math.max(0, totalAgents - scrollOffset - height)
+
   return (
-    <Box flexDirection="column" borderStyle="single" borderColor={COLOR_GRAY} paddingX={1}>
+    <Box
+      flexDirection="column"
+      borderStyle="single"
+      borderColor={COLOR_GRAY}
+      paddingX={1}
+    >
       <Text color={COLOR_GRAY} bold>
         Agents
       </Text>
       <Text color={COLOR_GRAY} dimColor>
         Always included: {universalLabels}
       </Text>
-      <Text color={COLOR_GRAY}>─────────────────────</Text>
+      <Text color={COLOR_GRAY}>─────────────────────----------------</Text>
       <Text color={COLOR_GRAY} dimColor>
         Additional agents (select with Space):
       </Text>
@@ -55,6 +78,9 @@ export const AgentSelector = memo(function AgentSelector({ selectedAgents, focus
           )
         })}
       </ScrollList>
+      <Text color={COLOR_GRAY} dimColor>
+        ↑ {itemsAbove} more ↓ {itemsBelow} more
+      </Text>
     </Box>
   )
 })

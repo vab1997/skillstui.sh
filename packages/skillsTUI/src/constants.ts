@@ -6,7 +6,7 @@ export const LOGO_LINES = [
   '███████║██╗  ██╗██║███████╗███████╗███████║   ██║   ╚██████╔╝██║',
   '╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝',
 ]
-export const SUBTITLE_LINES = 'TUI for The Open Agent Skills Ecosystem'
+export const SUBTITLE_LINES = 'TUI - The Open Agent Skills Ecosystem'
 
 /** Colors */
 export const COLOR_GREEN = '#00FF88'

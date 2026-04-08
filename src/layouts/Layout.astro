@@ -8,45 +8,45 @@ interface Props {
 }
 
 const {
-  title = 'skillsTUI — TUI for The Open Agent Skills Ecosystem',
-  description = 'TUI for The Open Agent Skills Ecosystem',
+  title = 'skillsTUI — The Agent Skills Directory',
+  description = 'skillsTUI - Discover and install skills for AI agents.',
 } = Astro.props
 ---
 
 <!doctype html>
-<html lang='en' class='dark'>
+<html lang="en" class="dark">
   <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <link rel='canonical' href='https://skillstui.sh' />
-    <link rel='icon' href='/favicon.svg' type='image/svg+xml' />
-    <link rel='icon' href='/favicon.ico' sizes='48x48' />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://skillstui.sh" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <title>{title}</title>
-    <meta name='description' content={description} />
-    <link rel='manifest' href='/site.webmanifest' />
-    <link rel='sitemap' href='/sitemap.xml' />
-    <meta name='theme-color' content='#000' />
-    <meta name='robots' content='index, follow' />
-    <meta property='og:title' content={title} />
-    <meta property='og:description' content={description} />
-    <meta property='og:type' content='website' />
-    <meta property='og:url' content='https://skillstui.sh' />
-    <meta property='og:image' content='https://skillstui.sh/og.webp' />
-    <meta property='og:image:type' content='image/webp' />
-    <meta property='og:image:width' content='836' />
-    <meta property='og:image:height' content='451' />
-    <meta property='og:image:alt' content={title} />
-    <meta property='og:site_name' content='skillstui' />
-    <meta property='og:locale' content='en_US' />
-    <meta name='twitter:card' content='summary_large_image' />
-    <meta name='twitter:site' content='@victorbejas' />
-    <meta name='twitter:title' content={title} />
-    <meta name='twitter:description' content={description} />
-    <meta name='twitter:creator' content='@victorbejas' />
-    <meta name='twitter:image' content='https://skillstui.sh/og.webp' />
-    <meta name='twitter:image:alt' content={title} />
+    <meta name="description" content={description} />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="theme-color" content="#000" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://skillstui.sh" />
+    <meta property="og:image" content="https://skillstui.sh/og.webp" />
+    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:width" content="836" />
+    <meta property="og:image:height" content="451" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content="skillstui" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@victorbejas" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:creator" content="@victorbejas" />
+    <meta name="twitter:image" content="https://skillstui.sh/og.webp" />
+    <meta name="twitter:image:alt" content={title} />
     <script
-      type='application/ld+json'
+      type="application/ld+json"
       set:html={JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
@@ -69,7 +69,7 @@ const {
     />
   </head>
   <Analytics />
-  <body class='min-h-screen bg-black font-mono text-zinc-300'>
+  <body class="min-h-screen bg-black font-mono text-zinc-300">
     <slot />
   </body>
 </html>

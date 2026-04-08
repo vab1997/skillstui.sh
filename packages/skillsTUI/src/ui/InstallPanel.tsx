@@ -1,8 +1,14 @@
-import { spawn } from 'node:child_process'
-import React, { useEffect, useRef, useState } from 'react'
 import { Box, Text, useApp } from 'ink'
 import Spinner from 'ink-spinner'
-import { COLOR_GRAY, COLOR_GREEN, COLOR_RED, COLOR_WHITE, EXIT_DELAY_MS } from '../constants.ts'
+import { spawn } from 'node:child_process'
+import { useEffect, useRef, useState } from 'react'
+import {
+  COLOR_GRAY,
+  COLOR_GREEN,
+  COLOR_RED,
+  COLOR_WHITE,
+  EXIT_DELAY_MS,
+} from '../constants.ts'
 import { UNIVERSAL_AGENTS, type Agent } from './agents.ts'
 import type { Skill } from './types.ts'
 import { generateInstallCommand } from './utils.ts'
@@ -27,8 +33,12 @@ export async function runCommand(
   return new Promise((resolve) => {
     const proc = spawn(cmd!, rest, { stdio: ['ignore', 'pipe', 'pipe'] })
     let output = ''
-    proc.stdout.on('data', (d: Buffer) => { output += d.toString() })
-    proc.stderr.on('data', (d: Buffer) => { output += d.toString() })
+    proc.stdout.on('data', (d: Buffer) => {
+      output += d.toString()
+    })
+    proc.stderr.on('data', (d: Buffer) => {
+      output += d.toString()
+    })
     proc.on('close', (code: number | null) =>
       resolve({ success: code === 0, output }),
     )
@@ -74,7 +84,9 @@ export function InstallPanel({ skills, additionalAgents }: Props) {
 
         setSkillStates((prev) =>
           prev.map((s, i) =>
-            i === idx ? { ...s, status: result.success ? 'success' : 'failed' } : s,
+            i === idx
+              ? { ...s, status: result.success ? 'success' : 'failed' }
+              : s,
           ),
         )
       }
@@ -117,14 +129,18 @@ export function InstallPanel({ skills, additionalAgents }: Props) {
           if (s.status === 'pending') {
             return (
               <Text key={i} dimColor color={COLOR_GRAY}>
-                {'   ◌ '}{s.name}
+                {'   ◌ '}
+                {s.name}
               </Text>
             )
           }
           if (s.status === 'installing') {
             return (
               <Box key={i}>
-                <Text color={COLOR_GREEN}>{'   '}<Spinner type="dots" /></Text>
+                <Text color={COLOR_GREEN}>
+                  {'   '}
+                  <Spinner type="dots" />
+                </Text>
                 <Text> {s.name}...</Text>
               </Box>
             )
@@ -132,13 +148,15 @@ export function InstallPanel({ skills, additionalAgents }: Props) {
           if (s.status === 'success') {
             return (
               <Text key={i} color={COLOR_GREEN}>
-                {'   ✔ '}{s.name}
+                {'   ✔ '}
+                {s.name}
               </Text>
             )
           }
           return (
             <Text key={i} color={COLOR_RED}>
-              {'   ✘ '}{s.name}
+              {'   ✘ '}
+              {s.name}
               <Text dimColor> — failed</Text>
             </Text>
           )

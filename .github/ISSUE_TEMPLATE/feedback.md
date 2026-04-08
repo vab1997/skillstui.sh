@@ -1,8 +1,8 @@
 ---
-name: "💬 General feedback"
+name: '💬 General feedback'
 about: Share general thoughts, ideas, or suggestions
-title: "[FEEDBACK] "
-labels: ["feedback"]
+title: '[FEEDBACK] '
+labels: ['feedback']
 assignees: []
 ---
 

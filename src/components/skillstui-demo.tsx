@@ -83,7 +83,7 @@ export function SkillstuiDemo() {
             transition={{ delay: 0.2 }}
             className="text-[10px] tracking-wide text-[#8b949e] uppercase"
           >
-            TUI FOR THE OPEN AGENT SKILLS ECOSYSTEM
+            TUI - THE OPEN AGENT SKILLS ECOSYSTEM
           </motion.p>
 
           {/* Search Input */}

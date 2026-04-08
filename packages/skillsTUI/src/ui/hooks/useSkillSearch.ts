@@ -7,10 +7,7 @@ interface UseSkillSearchArgs {
   initialQuery: string
 }
 
-export function useSkillSearch({
-  dispatch,
-  initialQuery,
-}: UseSkillSearchArgs) {
+export function useSkillSearch({ dispatch, initialQuery }: UseSkillSearchArgs) {
   const searchIdRef = useRef(0)
 
   const handleSearch = useCallback(

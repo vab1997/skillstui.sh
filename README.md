@@ -47,11 +47,11 @@ bun run build  # compile to dist/
 
 ## Tech stack
 
-| Layer      | Tech                                                                         |
-| ---------- | ---------------------------------------------------------------------------- |
-| Website    | [Astro](https://astro.build) + React + Tailwind                              |
+| Layer      | Tech                                                                                |
+| ---------- | ----------------------------------------------------------------------------------- |
+| Website    | [Astro](https://astro.build) + React + Tailwind                                     |
 | CLI        | [Bun](https://bun.sh) + [Ink](https://github.com/vadimdemedes/ink) (React for CLIs) |
-| Skills API | [skills.sh](https://skills.sh)                                               |
+| Skills API | [skills.sh](https://skills.sh)                                                      |
 
 ## Contributing
 
