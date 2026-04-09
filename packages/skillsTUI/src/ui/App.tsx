@@ -55,10 +55,10 @@ export function App() {
 
   return (
     <Box flexDirection="column" padding={2}>
-      <Box flexDirection="column" marginBottom={1}>
+      <Box flexDirection="column">
         <Logo />
+        <Text color={COLOR_GRAY}>{SUBTITLE_LINES}</Text>
       </Box>
-      <Text color={COLOR_GRAY}>{SUBTITLE_LINES}</Text>
 
       <Box marginTop={1}>
         <SearchInput

@@ -45,7 +45,7 @@ export const AgentSelector = memo(function AgentSelector({
       borderColor={COLOR_GRAY}
       paddingX={1}
     >
-      <Text color={COLOR_GRAY} bold>
+      <Text color={COLOR_WHITE} bold>
         Agents
       </Text>
       <Text color={COLOR_GRAY} dimColor>

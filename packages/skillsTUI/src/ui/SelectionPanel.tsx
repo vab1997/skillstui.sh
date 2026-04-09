@@ -16,7 +16,7 @@ interface Props {
   copyStatus: 'idle' | 'success' | 'error'
 }
 
-const MAX_DISPLAY_LINES = 5
+const MAX_DISPLAY_LINES = 1
 
 export const SelectionPanel = memo(function SelectionPanel({
   selectedSkills,
@@ -81,7 +81,7 @@ export const SelectionPanel = memo(function SelectionPanel({
           <Text color={COLOR_WHITE}>{namesLine}</Text>
           <Box flexDirection="column" marginTop={1}>
             {visibleCommandLines.map((line, i) => (
-              <Text key={i} color={COLOR_GRAY}>
+              <Text key={i} color={COLOR_GRAY} wrap="truncate">
                 {line}
               </Text>
             ))}

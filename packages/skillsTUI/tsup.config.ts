@@ -15,6 +15,7 @@ export default defineConfig({
     'ink-scroll-list',
     'ink-spinner',
     'ink-text-input',
+    'fullscreen-ink',
   ],
   external: [
     'react-devtools-core',

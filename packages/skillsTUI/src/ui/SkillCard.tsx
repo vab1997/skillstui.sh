@@ -1,3 +1,4 @@
+import { useScreenSize } from 'fullscreen-ink'
 import { Box, Text } from 'ink'
 import {
   CHECKBOX_CHECKED,
@@ -18,6 +19,8 @@ interface Props {
 }
 
 export function SkillCard({ skill, index, isSelected, isFocused }: Props) {
+  const { width } = useScreenSize()
+  const isWide = width >= 100
   const checkbox = isSelected ? CHECKBOX_CHECKED : CHECKBOX_EMPTY
   const nameColor = isSelected ? COLOR_GREEN : COLOR_WHITE
   const focusIndicator = isFocused ? '▶ ' : '  '
@@ -29,18 +32,23 @@ export function SkillCard({ skill, index, isSelected, isFocused }: Props) {
           <Text color={COLOR_GREEN}>{focusIndicator}</Text>
           <Text color={nameColor} bold>
             {checkbox} {index + 1}. {skill.name}{' '}
-            <Text color={COLOR_GRAY}>{skill.source}</Text>{' '}
+            {isWide && <Text color={COLOR_GRAY}>{skill.source}</Text>}
+            {' '}
           </Text>
           <Text color={COLOR_GRAY}>
             ({formatInstallCount(skill.installs)} installs)
           </Text>
         </Box>
-        <Text color={COLOR_BLUE} dimColor={!isFocused}>
-          {' '}
-          [show detail]
-        </Text>
+        {isWide && (
+          <Text color={COLOR_BLUE} dimColor={!isFocused}>
+            {' '}
+            [detail]
+          </Text>
+        )}
       </Box>
-      <Text color={COLOR_GRAY}> {skill.command}</Text>
+      <Text color={COLOR_GRAY} wrap="truncate-end">
+        {skill.command}
+      </Text>
     </Box>
   )
 }
