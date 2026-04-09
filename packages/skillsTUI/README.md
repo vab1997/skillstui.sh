@@ -66,11 +66,11 @@ skillstui
 
 Skills are installed for **all** of the following agents by default:
 
-Amp · Antigravity · Cline · Codex · Cursor · Deep Agents · Gemini CLI · GitHub Copilot · Kimi Code CLI · OpenCode · Replit · Warp
+Amp · Antigravity · Cline · Codex · Cursor · Deep Agents · Firebender · Gemini CLI · GitHub Copilot · Kimi Code CLI · OpenCode · Replit · Warp
 
 **Opt-in agents** (click to toggle in the TUI):
 
-Augment · Claude Code · CodeBuddy · Command Code · Continue · Cortex Code · Crush · Goose · Junie · Kilo Code · Kiro CLI · Mistral Vibe · OpenClaw · OpenHands · Roo Code · Trae · Windsurf · Zencoder
+AdaL · Augment · Claude Code · CodeBuddy · Command Code · Continue · Cortex Code · Crush · Droid · Goose · IBM Bob · iFlow CLI · Junie · Kilo Code · Kiro CLI · Kode · MCPJam · Mistral Vibe · Mux · Neovate · OpenClaw · OpenHands · Pi · Pochi · Qoder · Qwen Code · Roo Code · Trae · Trae CN · Windsurf · Zencoder
 
 ---
 
