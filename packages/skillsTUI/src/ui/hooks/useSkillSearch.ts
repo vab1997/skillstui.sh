@@ -23,7 +23,8 @@ export function useSkillSearch({ dispatch, initialQuery }: UseSkillSearchArgs) {
         if (searchId !== searchIdRef.current) return
 
         dispatch({ type: 'SET_RESULTS', payload: skills })
-
+        dispatch({ type: 'SET_LAST_QUERY', payload: trimmed })
+        
         if (skills.length > 0) {
           dispatch({ type: 'SET_FOCUS', payload: 'skills' })
         }

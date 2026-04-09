@@ -74,6 +74,7 @@ export function App() {
         isLoading={state.isLoading}
         error={state.error}
         query={state.query}
+        lastQuery={state.lastQuery}
         selectedSkills={state.selectedSkills}
         focusedIndex={state.focusedSkillIndex}
         height={SKILL_LIST_HEIGHT}

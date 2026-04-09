@@ -5,6 +5,7 @@ export type PanelFocus = 'search' | 'skills' | 'agents'
 
 export interface State {
   query: string
+  lastQuery: string
   results: Skill[]
   isLoading: boolean
   error: string | null
@@ -19,6 +20,7 @@ export interface State {
 
 export type Action =
   | { type: 'SET_QUERY'; payload: string }
+  | { type: 'SET_LAST_QUERY'; payload: string }
   | { type: 'SET_RESULTS'; payload: Skill[] }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
@@ -33,6 +35,7 @@ export type Action =
 export function getInitialState(): State {
   return {
     query: 'vercel',
+    lastQuery: 'vercel',
     results: [],
     isLoading: false,
     error: null,
@@ -51,7 +54,10 @@ export function reducer(state: State, action: Action): State {
     case 'SET_QUERY':
       return { ...state, query: action.payload }
 
-    case 'SET_RESULTS':
+    case 'SET_LAST_QUERY':
+      return { ...state, lastQuery: action.payload }
+
+      case 'SET_RESULTS':
       return {
         ...state,
         results: action.payload,

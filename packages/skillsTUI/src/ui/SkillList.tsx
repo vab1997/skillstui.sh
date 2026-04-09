@@ -11,6 +11,7 @@ interface Props {
   isLoading: boolean
   error: string | null
   query: string
+  lastQuery: string
   selectedSkills: Map<string, Skill>
   focusedIndex: number
   height: number
@@ -21,6 +22,7 @@ export const SkillList = memo(function SkillList({
   isLoading,
   error,
   query,
+  lastQuery,
   selectedSkills,
   focusedIndex,
   height,
@@ -33,7 +35,8 @@ export const SkillList = memo(function SkillList({
       paddingX={1}
     >
       <Text bold color={COLOR_WHITE}>
-        Skill Results
+        Skill Results - {results.length} result{results.length !== 1 ? 's' : ''}{' '}
+        for "{lastQuery}"
       </Text>
 
       {isLoading && (
@@ -59,14 +62,11 @@ export const SkillList = memo(function SkillList({
 
       {!isLoading && !error && results.length > 0 && (
         <>
-          <Text color={COLOR_GRAY}>
-            {results.length} result{results.length !== 1 ? 's' : ''} for "
-            {query}"
-          </Text>
           <ScrollList
             selectedIndex={focusedIndex}
             scrollAlignment="auto"
             height={height}
+            marginTop={1}
           >
             {results.map((skill, i) => (
               <SkillCard
