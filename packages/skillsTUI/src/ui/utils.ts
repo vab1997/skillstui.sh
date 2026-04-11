@@ -31,6 +31,101 @@ export function truncateLine(text: string, maxWidth: number): string {
   return text.slice(0, maxWidth - 1) + '…'
 }
 
+const getTextWidth = (value: string) => [...value].length
+
+const truncateLineWithEllipsis = (line: string, maxWidth: number) => {
+  if (maxWidth <= 0) {
+    return ''
+  }
+
+  const ellipsis = '...'
+  if (getTextWidth(line) + getTextWidth(ellipsis) <= maxWidth) {
+    return `${line}${ellipsis}`
+  }
+
+  let truncatedLine = ''
+  for (const char of line) {
+    if (getTextWidth(truncatedLine + char + ellipsis) > maxWidth) {
+      break
+    }
+
+    truncatedLine += char
+  }
+
+  if (truncatedLine.length > 0) {
+    return `${truncatedLine}${ellipsis}`
+  }
+
+  return ellipsis.slice(0, maxWidth)
+}
+
+const wrapText = (text: string, maxWidth: number) => {
+  if (!text || maxWidth <= 0) {
+    return []
+  }
+
+  const words = text.split(' ')
+  const lines: string[] = []
+  let currentLine = ''
+
+  for (const word of words) {
+    const candidateLine = currentLine ? `${currentLine} ${word}` : word
+    if (getTextWidth(candidateLine) <= maxWidth) {
+      currentLine = candidateLine
+      continue
+    }
+
+    if (currentLine) {
+      lines.push(currentLine)
+    }
+
+    if (getTextWidth(word) <= maxWidth) {
+      currentLine = word
+      continue
+    }
+
+    let remainingWord = word
+    while (getTextWidth(remainingWord) > maxWidth) {
+      const slice = [...remainingWord].slice(0, maxWidth).join('')
+      lines.push(slice)
+      remainingWord = [...remainingWord].slice(maxWidth).join('')
+    }
+
+    currentLine = remainingWord
+  }
+
+  if (currentLine) {
+    lines.push(currentLine)
+  }
+
+  return lines
+}
+
+export function clampTextToLines(
+  text: string,
+  maxWidth: number,
+  maxLines: number,
+): string {
+  if (!text || maxWidth <= 0 || maxLines <= 0) {
+    return ''
+  }
+
+  const wrappedLines = wrapText(text, maxWidth)
+
+  if (wrappedLines.length <= maxLines) {
+    return wrappedLines.join('\n')
+  }
+
+  const visibleLines = wrappedLines.slice(0, maxLines)
+  const lastVisibleLine = visibleLines[maxLines - 1]!.trimEnd()
+  visibleLines[maxLines - 1] = truncateLineWithEllipsis(
+    lastVisibleLine,
+    maxWidth,
+  )
+
+  return visibleLines.join('\n')
+}
+
 export function chunkArray<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = []
   for (let i = 0; i < arr.length; i += size) {

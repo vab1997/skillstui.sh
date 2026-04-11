@@ -28,12 +28,7 @@ export const SkillList = memo(function SkillList({
   height,
 }: Props) {
   return (
-    <Box
-      flexDirection="column"
-      borderStyle="round"
-      borderColor={COLOR_GRAY}
-      paddingX={1}
-    >
+    <Box flexDirection="column" paddingX={1}>
       <Text bold color={COLOR_WHITE}>
         Skill Results - {results.length} result{results.length !== 1 ? 's' : ''}{' '}
         for "{lastQuery}"
@@ -50,14 +45,22 @@ export const SkillList = memo(function SkillList({
 
       {!isLoading && error && <Text color="#FF4444">{error}</Text>}
 
-      {!isLoading && !error && results.length === 0 && query && (
-        <Text color={COLOR_GRAY}>No results found for "{query}"</Text>
-      )}
+      {!isLoading &&
+        !error &&
+        results.length === 0 &&
+        query.trim().length >= 2 && (
+          <Text color={COLOR_GRAY}>No results found for "{query}"</Text>
+        )}
 
-      {!isLoading && !error && results.length === 0 && !query && (
-        <Text color={COLOR_GRAY}>
-          Type a skill name and press Enter to search
-        </Text>
+      {!isLoading &&
+        !error &&
+        results.length === 0 &&
+        query.trim().length === 1 && (
+          <Text color={COLOR_GRAY}>Type at least 2 characters to search</Text>
+        )}
+
+      {!isLoading && !error && results.length === 0 && !query.trim() && (
+        <Text color={COLOR_GRAY}>Type to search...</Text>
       )}
 
       {!isLoading && !error && results.length > 0 && (

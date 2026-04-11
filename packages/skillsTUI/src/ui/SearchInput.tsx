@@ -17,7 +17,7 @@ export function SearchInput({ value, onChange, onSubmit, isFocused }: Props) {
         value={value}
         onChange={onChange}
         onSubmit={onSubmit}
-        placeholder="type a skill name and press Enter..."
+        placeholder="type to search..."
         focus={isFocused}
         showCursor={isFocused}
       />

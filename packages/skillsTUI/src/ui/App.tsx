@@ -1,4 +1,8 @@
 import { Box, Text } from 'ink'
+// import Divider from 'ink-divider'
+import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { memo, useReducer } from 'react'
 import {
   COLOR_GRAY,
@@ -12,6 +16,7 @@ import { InstallPanel } from './InstallPanel.tsx'
 import { SearchInput } from './SearchInput.tsx'
 import { SelectionPanel } from './SelectionPanel.tsx'
 import { SkillList } from './SkillList.tsx'
+import Divider from './divider.tsx'
 import { useAppKeyboardNavigation } from './hooks/useAppKeyboardNavigation.ts'
 import { useSkillSearch } from './hooks/useSkillSearch.ts'
 import { getInitialState, reducer } from './store.ts'
@@ -32,9 +37,14 @@ const Logo = memo(function Logo() {
   )
 })
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const { version } = JSON.parse(
+  readFileSync(resolve(__dirname, '../package.json'), 'utf-8'),
+)
+
 export function App() {
   const [state, dispatch] = useReducer(reducer, undefined, getInitialState)
-  const { handleSearch } = useSkillSearch({
+  const { handleSearch, debouncedSearch } = useSkillSearch({
     dispatch,
     initialQuery: INITIAL_QUERY,
   })
@@ -57,17 +67,33 @@ export function App() {
     <Box flexDirection="column" padding={2}>
       <Box flexDirection="column">
         <Logo />
-        <Text color={COLOR_GRAY}>{SUBTITLE_LINES}</Text>
+        <Text color={COLOR_GRAY}>
+          {SUBTITLE_LINES} - v{version}
+        </Text>
       </Box>
 
       <Box marginTop={1}>
         <SearchInput
           value={state.query}
-          onChange={(v) => dispatch({ type: 'SET_QUERY', payload: v })}
+          onChange={(v) => {
+            dispatch({ type: 'SET_QUERY', payload: v })
+            if (v.trim().length >= 2) debouncedSearch(v)
+          }}
           onSubmit={handleSearch}
           isFocused={state.focusedPanel === 'search'}
         />
       </Box>
+
+      {state.query.trim().length === 1 && (
+        <Text color={COLOR_GRAY}> Type at least 2 characters to search</Text>
+      )}
+
+      <Divider
+        title="Skills"
+        dividerColor={COLOR_GRAY}
+        titleColor={COLOR_WHITE}
+        paddingBottom={1}
+      />
 
       <SkillList
         results={state.results}
@@ -80,11 +106,25 @@ export function App() {
         height={SKILL_LIST_HEIGHT}
       />
 
+      <Divider
+        title="Agents"
+        dividerColor={COLOR_GRAY}
+        titleColor={COLOR_WHITE}
+        paddingBottom={1}
+      />
+
       <AgentSelector
         selectedAgents={state.selectedAgents}
         focusedIndex={state.focusedAgentIndex}
         isFocused={state.focusedPanel === 'agents'}
         height={AGENT_LIST_HEIGHT}
+      />
+
+      <Divider
+        title="Selection"
+        dividerColor={COLOR_GRAY}
+        titleColor={COLOR_WHITE}
+        paddingBottom={1}
       />
 
       <SelectionPanel

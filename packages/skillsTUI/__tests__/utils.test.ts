@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import type { Agent } from '../src/ui/agents'
 import type { Skill } from '../src/ui/types'
 import {
+  clampTextToLines,
   chunkArray,
   formatInstallCount,
   generateInstallCommand,
@@ -77,5 +78,25 @@ describe('chunkArray', () => {
 
   test('returns empty array for empty input', () => {
     expect(chunkArray([], 2)).toEqual([])
+  })
+})
+
+describe('clampTextToLines', () => {
+  test('returns wrapped text when it fits within the line limit', () => {
+    expect(clampTextToLines('uno dos tres', 7, 2)).toBe(
+      'uno dos\ntres',
+    )
+  })
+
+  test('truncates the last visible line when text exceeds the line limit', () => {
+    expect(clampTextToLines('uno dos tres cuatro cinco', 7, 2)).toBe(
+      'uno dos\ntres...',
+    )
+  })
+
+  test('splits long words before truncating', () => {
+    expect(clampTextToLines('supercalifragilistico', 5, 2)).toBe(
+      'super\nca...',
+    )
   })
 })

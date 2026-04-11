@@ -6,8 +6,8 @@ export const HelpText = memo(function HelpText() {
   return (
     <Box marginTop={1}>
       <Text color={COLOR_GRAY}>
-        [Tab] navigate panels · [↑↓] move · [Space] select · [S] detail ·
-        [Ctrl+G] install · [Ctrl+Y] copy · [Ctrl+C] exit
+        [Tab] next panel · [Shift+Tab] previous panel · [↑↓] move · [Space]
+        select · [S] detail · [Ctrl+G] install · [Ctrl+Y] copy · [Ctrl+C] exit
       </Text>
     </Box>
   )

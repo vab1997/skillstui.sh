@@ -9,6 +9,7 @@ import {
   COLOR_WHITE,
 } from '../constants.ts'
 import { ADDITIONAL_AGENTS, UNIVERSAL_AGENTS, type Agent } from './agents.ts'
+import Divider from './divider.tsx'
 
 interface Props {
   selectedAgents: Map<string, Agent>
@@ -39,19 +40,11 @@ export const AgentSelector = memo(function AgentSelector({
   const itemsBelow = Math.max(0, totalAgents - scrollOffset - height)
 
   return (
-    <Box
-      flexDirection="column"
-      borderStyle="single"
-      borderColor={COLOR_GRAY}
-      paddingX={1}
-    >
-      <Text color={COLOR_WHITE} bold>
-        Agents
-      </Text>
+    <Box flexDirection="column" paddingX={1}>
       <Text color={COLOR_GRAY} dimColor>
         Always included: {universalLabels}
       </Text>
-      <Text color={COLOR_GRAY}>─────────────────────----------------</Text>
+      <Divider width={40} dividerColor={COLOR_GRAY} />
       <Text color={COLOR_GRAY} dimColor>
         Additional agents (select with Space):
       </Text>
