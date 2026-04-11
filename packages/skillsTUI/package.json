@@ -1,6 +1,6 @@
 {
   "name": "skillstui",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "type": "module",
   "description": "TUI for discovering and installing AI agent skills from the Open Agent Skills Ecosystem",
   "keywords": [
@@ -63,6 +63,11 @@
     "skillstui": "dist/index.js"
   },
   "license": "MIT",
+  "homepage": "https://skillstui.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vab1997/skillstui.sh.git"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
