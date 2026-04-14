@@ -55,7 +55,66 @@ bun run build  # compile to dist/
 
 ## Contributing
 
-PRs welcome. Use **Bun** for everything — no npm, yarn, or pnpm.
+PRs welcome!
+
+### Prerequisites
+
+- [Bun](https://bun.sh) — used exclusively as runtime, package manager, and test runner (no npm, yarn, or pnpm)
+- Node.js ≥ 22.12.0
+
+### Setup
+
+```bash
+git clone https://github.com/victorbejas/skillstui.sh.git
+cd skillstui.sh
+bun install
+```
+
+### Website (`/`)
+
+The marketing and documentation site runs on Astro.
+
+```bash
+bun dev        # dev server → localhost:4321
+bun build      # production build → dist/
+bun preview    # preview production build locally
+bun lint       # ESLint + Prettier check
+bun format     # Prettier auto-fix
+```
+
+### CLI (`packages/skillsTUI`)
+
+The terminal UI published to npm as `skillstui`.
+
+```bash
+cd packages/skillsTUI
+bun install
+
+bun run build          # compile to dist/
+bun run start          # run the TUI directly
+bun run dev            # watch mode — recompiles on file changes
+bun test               # run test suite
+```
+
+### Project structure
+
+```
+/
+├── src/                    # Astro marketing site
+└── packages/
+    └── skillsTUI/          # CLI source
+        └── src/
+            ├── api.ts      # skills.sh API client
+            ├── clipboard.ts
+            ├── constants.ts
+            └── ui/         # Ink/React components and app logic
+```
+
+### Guidelines
+
+- Use **Bun** for everything — no npm, yarn, or pnpm
+- Run `bun test` before opening a PR
+- Follow the existing code style (Prettier handles formatting)
 
 ## License
 
