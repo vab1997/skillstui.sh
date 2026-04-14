@@ -5,6 +5,31 @@ All notable changes to skillsTUI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.12] - 2026-04-14
+
+### Added
+
+- `useTerminalHeight` hook — singleton resize listener on `process.stdout.rows`; skill list height adapts dynamically when font size or terminal window changes
+- `calculateSkillListHeight` utility — pure function that clamps the skill list viewport between a minimum (5 lines) and maximum (30 lines / ~10 results); capped to prevent oversized lists from pushing the logo off-screen on large terminals
+- `useMouseScroll` hook — parses SGR mouse scroll escape sequences from stdin for future mouse-driven list navigation
+
+### Changed
+
+- Removed alternate screen buffer (`\x1B[?1049h`) — the TUI now renders in the main terminal buffer, enabling native terminal scroll (mouse wheel, trackpad) so users can scroll up to see the logo and down to see the help bar, exactly like Claude Code
+- Logo is now flush to the top of the terminal output — removed `paddingTop` from the outer layout box
+- Skill list height is now responsive to terminal height instead of a hardcoded 30-line constant — reduces automatically on smaller/higher-DPI terminals
+- Keyboard-navigation tests and store tests migrated from untracked files to committed test suite
+
+### Fixed
+
+- Logo disappearing when results load on large terminals — the skill list no longer grows unbounded; it is capped at 30 lines regardless of terminal height
+- Title gap — blank lines above the ASCII logo removed
+
+### Removed
+
+- SGR mouse mode escape sequences (`\x1B[?1000h` / `\x1B[?1006h`) — not needed now that native terminal scroll is restored via main buffer rendering
+- Viewport scroll via `Shift+Arrow` — removed; Node.js/readline does not reliably detect the `shift` modifier on arrow keys in Ghostty and Warp
+
 ## [0.2.11] - 2026-04-13
 
 ### Added

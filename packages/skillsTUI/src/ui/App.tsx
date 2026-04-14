@@ -3,7 +3,7 @@ import { Box, Text } from 'ink'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { memo, useReducer } from 'react'
+import { memo, useCallback, useReducer } from 'react'
 import {
   COLOR_GRAY,
   COLOR_WHITE,
@@ -18,10 +18,11 @@ import { SelectionPanel } from './SelectionPanel.tsx'
 import { SkillList } from './SkillList.tsx'
 import Divider from './divider.tsx'
 import { useAppKeyboardNavigation } from './hooks/useAppKeyboardNavigation.ts'
+import { useTerminalHeight } from './hooks/useTerminalHeight.ts'
 import { useSkillSearch } from './hooks/useSkillSearch.ts'
 import { getInitialState, reducer } from './store.ts'
+import { calculateSkillListHeight } from './utils/calculateSkillListHeight.ts'
 
-const SKILL_LIST_HEIGHT = 30
 const AGENT_LIST_HEIGHT = 5
 const INITIAL_QUERY = getInitialState().query
 
@@ -49,7 +50,18 @@ export function App() {
     initialQuery: INITIAL_QUERY,
   })
 
+  const terminalRows = useTerminalHeight()
+  const skillListHeight = calculateSkillListHeight(terminalRows)
+
   useAppKeyboardNavigation({ state, dispatch })
+
+  const handleQueryChange = useCallback(
+    (v: string) => {
+      dispatch({ type: 'SET_QUERY', payload: v })
+      if (v.trim().length >= 2) debouncedSearch(v)
+    },
+    [debouncedSearch],
+  )
 
   if (state.isInstalling) {
     return (
@@ -64,7 +76,12 @@ export function App() {
   }
 
   return (
-    <Box flexDirection="column" padding={2}>
+    <Box
+      flexDirection="column"
+      paddingTop={0}
+      paddingX={2}
+      paddingBottom={2}
+    >
       <Box flexDirection="column">
         <Logo />
         <Text color={COLOR_GRAY}>
@@ -75,10 +92,7 @@ export function App() {
       <Box marginTop={1}>
         <SearchInput
           value={state.query}
-          onChange={(v) => {
-            dispatch({ type: 'SET_QUERY', payload: v })
-            if (v.trim().length >= 2) debouncedSearch(v)
-          }}
+          onChange={handleQueryChange}
           onSubmit={handleSearch}
           isFocused={state.focusedPanel === 'search'}
         />
@@ -103,7 +117,7 @@ export function App() {
         lastQuery={state.lastQuery}
         selectedSkills={state.selectedSkills}
         focusedIndex={state.focusedSkillIndex}
-        height={SKILL_LIST_HEIGHT}
+        height={skillListHeight}
       />
 
       <Divider
