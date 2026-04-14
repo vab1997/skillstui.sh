@@ -1,5 +1,5 @@
-import { useScreenSize } from 'fullscreen-ink'
 import { Box, Text } from 'ink'
+import { memo } from 'react'
 import {
   CHECKBOX_CHECKED,
   CHECKBOX_EMPTY,
@@ -18,9 +18,12 @@ interface Props {
   isFocused: boolean
 }
 
-export function SkillCard({ skill, index, isSelected, isFocused }: Props) {
-  const { width } = useScreenSize()
-  const isWide = width >= 100
+export const SkillCard = memo(function SkillCard({
+  skill,
+  index,
+  isSelected,
+  isFocused,
+}: Props) {
   const checkbox = isSelected ? CHECKBOX_CHECKED : CHECKBOX_EMPTY
   const nameColor = isSelected ? COLOR_GREEN : COLOR_WHITE
   const focusIndicator = isFocused ? '▶ ' : '  '
@@ -30,25 +33,24 @@ export function SkillCard({ skill, index, isSelected, isFocused }: Props) {
       <Box flexDirection="row" justifyContent="space-between">
         <Box flexDirection="row">
           <Text color={COLOR_GREEN}>{focusIndicator}</Text>
-          <Text color={nameColor} bold>
+          <Text color={nameColor} bold wrap="truncate-end">
             {checkbox} {index + 1}. {skill.name}{' '}
-            {isWide && <Text color={COLOR_GRAY}>{skill.source}</Text>}
-            {' '}
           </Text>
-          <Text color={COLOR_GRAY}>
-            ({formatInstallCount(skill.installs)} installs)
+          <Text color={COLOR_GRAY} wrap="truncate-end">
+            {`(${formatInstallCount(skill.installs)} install${
+              skill.installs !== 1 ? 's' : ''
+            })`}{' '}
           </Text>
         </Box>
-        {isWide && (
-          <Text color={COLOR_BLUE} dimColor={!isFocused}>
-            {' '}
-            [detail]
-          </Text>
-        )}
+
+        <Text color={COLOR_BLUE} dimColor={!isFocused}>
+          {' '}
+          [Show]
+        </Text>
       </Box>
-      <Text color={COLOR_GRAY} wrap="truncate-end">
-        {skill.command}
-      </Text>
+      <Box flexDirection="row" marginLeft={2}>
+        <Text color={COLOR_GRAY}>{skill.source}</Text>
+      </Box>
     </Box>
   )
-}
+})

@@ -5,6 +5,27 @@ All notable changes to skillsTUI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.11] - 2026-04-13
+
+### Added
+
+- `useTerminalWidth` hook — singleton resize listener on `process.stdout`; all components share a single `resize` event subscription instead of N independent ones
+
+### Changed
+
+- Replaced `fullscreen-ink` with manual alternate screen mode (`\x1B[?1049h`/`\x1B[?1049l`) + cursor hide/restore managed in `index.tsx` — eliminates post-search flash while keeping fullscreen rendering; contributed by [@milocai](https://github.com/milocai)
+- Terminal width in `SkillCard` and `SelectionPanel` now reads from `useTerminalWidth()` instead of a static `process.stdout.columns` call — source column and selection text wrap update dynamically on resize
+- Skill list keys changed to `${skill.id}-${index}` to guarantee uniqueness across re-renders
+
+### Fixed
+
+- Terminal layout corruption on resize — old output no longer overlaps new content after the terminal is resized; contributed by [@milocai](https://github.com/milocai)
+- `MaxListenersExceededWarning` — reduced `process.stdout` resize listeners from N (one per `SkillCard` instance) to 1 via module-level singleton in `useTerminalWidth`
+
+### Removed
+
+- `fullscreen-ink` dependency
+
 ## [0.2.10] - 2026-04-11
 
 ### Changed

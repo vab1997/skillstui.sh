@@ -73,7 +73,7 @@ export const SkillList = memo(function SkillList({
           >
             {results.map((skill, i) => (
               <SkillCard
-                key={skill.id}
+                key={`${skill.id}-${i}`}
                 skill={skill}
                 index={i}
                 isSelected={selectedSkills.has(skill.id)}

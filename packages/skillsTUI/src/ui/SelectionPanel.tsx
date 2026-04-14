@@ -8,6 +8,7 @@ import {
 } from '../constants.ts'
 import type { Agent } from './agents.ts'
 import type { Skill } from './types.ts'
+import { useTerminalWidth } from './hooks/useTerminalWidth.ts'
 import { buildDisplayCommand, clampTextToLines } from './utils.ts'
 
 interface Props {
@@ -28,6 +29,7 @@ export const SelectionPanel = memo(function SelectionPanel({
   selectedAgents,
   copyStatus,
 }: Props) {
+  const columns = useTerminalWidth()
   const count = selectedSkills.size
 
   const copyStatusColor =
@@ -53,7 +55,7 @@ export const SelectionPanel = memo(function SelectionPanel({
     namesLine = [...selectedSkills.values()].map((s) => s.name).join(' · ')
     const availableWidth = Math.max(
       1,
-      (process.stdout.columns ?? 80) - RESERVED_HORIZONTAL_SPACE,
+      columns - RESERVED_HORIZONTAL_SPACE,
     )
     visibleNamesLine = clampTextToLines(
       namesLine,

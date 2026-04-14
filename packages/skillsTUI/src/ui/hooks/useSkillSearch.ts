@@ -40,7 +40,7 @@ export function useSkillSearch({ dispatch, initialQuery }: UseSkillSearchArgs) {
     [dispatch],
   )
 
-  const debouncedSearch = useDebounceCallback(executeSearch, 500)
+  const debouncedSearch = useDebounceCallback(executeSearch, 1000)
 
   // Enter: cancel pending debounce, fire immediately (guard: 2+ chars required)
   const handleSearch = useCallback(
