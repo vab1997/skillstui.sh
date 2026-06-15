@@ -4,6 +4,7 @@ import type { Skill } from '../src/ui/types'
 import {
   clampTextToLines,
   chunkArray,
+  extractInstallError,
   formatInstallCount,
   generateInstallCommand,
   truncateLine,
@@ -98,5 +99,29 @@ describe('clampTextToLines', () => {
     expect(clampTextToLines('supercalifragilistico', 5, 2)).toBe(
       'super\nca...',
     )
+  })
+})
+
+describe('extractInstallError', () => {
+  test('returns the clack error line, ANSI/glyph stripped', () => {
+    const output = [
+      '\x1b[?25l│',
+      '\x1b[0m●  Selected 1 skill: find-skills',
+      '│',
+      '■  Invalid agents: kimi-cli',
+      '│',
+      '●  Valid agents: amp, antigravity, kimi-code-cli',
+    ].join('\n')
+    expect(extractInstallError(output)).toBe('Invalid agents: kimi-cli')
+  })
+
+  test('falls back to last non-empty line when no error marker', () => {
+    expect(extractInstallError('first line\n\n  last line  \n')).toBe(
+      'last line',
+    )
+  })
+
+  test('returns empty string for empty output', () => {
+    expect(extractInstallError('')).toBe('')
   })
 })

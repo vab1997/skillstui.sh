@@ -7,8 +7,6 @@ export interface SkillsApiSkill {
   name: string
   installs: number
   source: string
-  command: string
-  url: string
 }
 
 async function apiSearchSkills({ skill }: { skill: string }) {

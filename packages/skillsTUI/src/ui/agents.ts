@@ -15,7 +15,7 @@ export const UNIVERSAL_AGENTS: Agent[] = [
   { value: 'firebender', label: 'Firebender', hint: '.agents/skills/' },
   { value: 'gemini-cli', label: 'Gemini CLI', hint: '.agents/skills/' },
   { value: 'github-copilot', label: 'GitHub Copilot', hint: '.agents/skills/' },
-  { value: 'kimi-cli', label: 'Kimi Code CLI', hint: '.agents/skills/' },
+  { value: 'kimi-code-cli', label: 'Kimi Code CLI', hint: '.agents/skills/' },
   { value: 'opencode', label: 'OpenCode', hint: '.agents/skills/' },
   { value: 'replit', label: 'Replit', hint: '.agents/skills/' },
   { value: 'warp', label: 'Warp', hint: '.agents/skills/' },

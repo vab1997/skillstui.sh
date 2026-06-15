@@ -126,6 +126,25 @@ export function clampTextToLines(
   return visibleLines.join('\n')
 }
 
+// Matches ANSI escape sequences (color/cursor codes) emitted by the skills CLI.
+// eslint-disable-next-line no-control-regex
+const ANSI_REGEX = /\x1b\[[0-9;?]*[A-Za-z]/g
+
+// Pulls a human-readable reason out of a failed `skills add` output.
+// The CLI marks errors with the clack '■' glyph (e.g. '■  Invalid agents: kimi-cli').
+export function extractInstallError(output: string): string {
+  const lines = output.replace(ANSI_REGEX, '').split('\n')
+
+  // Prefer the clack error line ('■'); otherwise the last non-empty line.
+  const errorLine = lines.find((l) => l.includes('■'))
+  const clean = (l: string) => l.replace(/[│●◇◆◒◐◓◑■]/g, '').trim()
+
+  if (errorLine) return clean(errorLine)
+
+  const nonEmpty = lines.map(clean).filter((l) => l.length > 0)
+  return nonEmpty.length > 0 ? nonEmpty[nonEmpty.length - 1]! : ''
+}
+
 export function chunkArray<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = []
   for (let i = 0; i < arr.length; i += size) {
