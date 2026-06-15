@@ -1,6 +1,6 @@
 {
   "name": "skillstui",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "type": "module",
   "description": "TUI for discovering and installing AI agent skills from the Open Agent Skills Ecosystem",
   "keywords": [
@@ -35,7 +35,7 @@
     "junie",
     "iflow-cli",
     "kilo",
-    "kimi-cli",
+    "kimi-code-cli",
     "kiro-cli",
     "kode",
     "mcpjam",
@@ -93,6 +93,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@types/node": "^25.9.3",
     "ink": "^5",
     "ink-scroll-list": "^0.4.1",
     "ink-spinner": "^5",

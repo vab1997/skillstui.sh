@@ -11,7 +11,11 @@ import {
 } from '../constants.ts'
 import { UNIVERSAL_AGENTS, type Agent } from './agents.ts'
 import type { Skill } from './types.ts'
-import { generateInstallCommand } from './utils.ts'
+import {
+  extractInstallError,
+  generateInstallCommand,
+  truncateLine,
+} from './utils.ts'
 
 const CONCURRENCY = 5
 
@@ -20,6 +24,7 @@ type SkillStatus = 'pending' | 'installing' | 'success' | 'failed'
 interface SkillState {
   name: string
   status: SkillStatus
+  error?: string
 }
 
 function getNpxCommand() {
@@ -85,7 +90,13 @@ export function InstallPanel({ skills, additionalAgents }: Props) {
         setSkillStates((prev) =>
           prev.map((s, i) =>
             i === idx
-              ? { ...s, status: result.success ? 'success' : 'failed' }
+              ? {
+                  ...s,
+                  status: result.success ? 'success' : 'failed',
+                  error: result.success
+                    ? undefined
+                    : extractInstallError(result.output),
+                }
               : s,
           ),
         )
@@ -157,7 +168,10 @@ export function InstallPanel({ skills, additionalAgents }: Props) {
             <Text key={i} color={COLOR_RED}>
               {'   ✘ '}
               {s.name}
-              <Text dimColor> — failed</Text>
+              <Text dimColor>
+                {' — failed'}
+                {s.error ? `: ${truncateLine(s.error, 60)}` : ''}
+              </Text>
             </Text>
           )
         })}
